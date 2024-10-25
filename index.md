@@ -9,5 +9,6 @@ layout: default
 * [Security Policy](./security-policy)
 * [CNA Scope](./scope)
 * [Contact](./contact)
+* [Issued CVE's](./cves)
 
 This project is maintained by the [Security Working Group](https://erlef.org/wg/security).
