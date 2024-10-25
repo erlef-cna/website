@@ -12,3 +12,4 @@ page_gen:
   index_files: false
   name_expr: 'record["cveMetadata"]["cveId"]'
   title_expr: 'record["containers"]["cna"]["title"] || record["cveMetadata"]["cveId"]'
+repository: erlef-cna/website
