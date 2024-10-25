@@ -17,7 +17,7 @@ title: List of Issued CVE's
     {% for cve in site.data.cves %}
       <tr>
         <td>
-          <a href="{{ cve[0] | downcase }}.html">
+          <a href="{{ site.baseurl }}/cves/{{ cve[0] | downcase }}.html">
             {{ cve[1].containers.cna.title }}
           </a>
         </td>
