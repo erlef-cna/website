@@ -1,9 +1,11 @@
-title: EEF CNA
+title: Erlang Ecosystem Foundation CNA
 description: This project handles the CVE Numbering Authority (CNA) for the Erlang Ecosystem Foundation (EEF).
-remote_theme: pages-themes/cayman@v0.2.0
+
 plugins:
 - jekyll-remote-theme
 - jekyll-datapage-generator
+- jekyll-include-cache
+
 page_gen-dirs: true
 page_gen:
 - data: cves
@@ -12,4 +14,17 @@ page_gen:
   index_files: false
   name_expr: 'record["cveMetadata"]["cveId"]'
   title_expr: 'record["containers"]["cna"]["title"] || record["cveMetadata"]["cveId"]'
+
 repository: erlef-cna/website
+remote_theme: "mmistakes/minimal-mistakes@4.26.2"
+footer:
+  links:
+    - label: "Erlang Ecosystem Foundation"
+      url: "https://erlef.org"
+    - label: "EEF Security Working Group"
+      url: "https://erlef.org/wg/security"
+    - label: "CNA on GitHub"
+      url: "https://github.com/erlef-cna"
+atom_feed:
+  hide: true
+logo: https://raw.githubusercontent.com/erlef-cna/.github/refs/heads/main/profile/assets/erlef-logo-light.svg

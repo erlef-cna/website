@@ -1,8 +1,7 @@
 ---
-layout: default
+title: Erlang Ecosystem Foundation CNA
+layout: archive
 ---
-
-# Erlang Ecosystem Foundation CNA
 
 ⚠️ **Note: This project is currently under construction and is not yet active.** ⚠️
 

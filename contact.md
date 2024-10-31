@@ -1,6 +1,7 @@
 ---
-layout: page
+layout: single
 title: Contact
+breadcrumbs: true
 ---
 
 TODO: Put Contact Information

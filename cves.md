@@ -1,6 +1,7 @@
 ---
-layout: page
+layout: archive
 title: List of Issued CVE's
+breadcrumbs: true
 ---
 
 <table>
