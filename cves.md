@@ -23,7 +23,7 @@ breadcrumbs: true
           </a>
         </td>
         <td>
-          <a href="{{ cve[0] | downcase }}.html">
+          <a href="{{ site.baseurl }}/cves/{{ cve[0] | downcase }}.html">
             {{ cve[0] }}
           </a>
         </td>
