@@ -31,12 +31,12 @@ vulnerabilities through the contact methods outlined on our
 
 ### 3.2. Handling Different Types of Vulnerabilities
 
-#### 3.2.1. Zero-Day Vulnerabilities
+#### 3.2.1. Publicly Disclosed Vulnerabilities
 
 - **Definition:** Vulnerabilities that are publicly known or actively exploited
   in the wild.
-- **Action:** We will publish information about zero-day vulnerabilities within
-  **24 hours or less**.
+- **Action:** We will publish information about publicly disclosed
+  vulnerabilities within **24 hours or less**.
 
 #### 3.2.2. Vulnerabilities in Projects Participating in the CNA
 
@@ -144,7 +144,7 @@ We adhere to the following policies and guidelines:
 - **Limitations:** We will only follow the project's security policies if the
   maintainers respond within **14 days** of our initial communication. We will
   not honor disclosure timelines exceeding our maximum timeframes and will
-  proceed with publishing zero-day vulnerabilities promptly.
+  proceed with publishing publicly disclosed vulnerabilities promptly.
 - **Maintainer Communication:** Project maintainers are encouraged to reach out
   to us for clarity or to establish preferred communication channels.
 
