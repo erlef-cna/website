@@ -42,7 +42,7 @@ vulnerabilities through the contact methods outlined on our
 
 - **Pre-Arranged Contacts:** We have established direct communication channels
   with these projects to ensure timely coordination. This includes Elixir,
-  Erlang, Erlang Ecosystem Foundation, Glem, and Hex.
+  Erlang, Erlang Ecosystem Foundation, Gleam, and Hex.
 - **Process:** Projects with prior agreements may have tailored processes for
   vulnerability handling, while always adhering to the timeframes outlined in
   this document.
