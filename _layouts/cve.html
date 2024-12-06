@@ -61,7 +61,16 @@ breadcrumbs: true
   <h2>Affected</h2>
 
   {% for entry in affected %}
-    <h3>{{ entry.vendor }} / {{ entry.product }}</h3>
+    <h3>
+      {% case entry.collectionURL %}
+        {% when "https://repo.hex.pm" %}
+          Hex: <code>{{ entry.packageName }}</code>
+        {% when "https://github.com" %}
+          GitHub: <code>{{ entry.packageName }}</code>
+        {% else %}
+          {{ entry.vendor }} / {{ entry.product }}
+      {% endcase %}
+    </h3>
 
     <ul>
       {% for version in entry.versions %}
