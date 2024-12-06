@@ -16,6 +16,24 @@ this initiative encompasses [Erlang](https://www.erlang.org/), [Erlang Ecosystem
 and [Hex.pm packages](https://hex.pm/packages) hosted by the
 [Erlang Ecosystem Foundation’s Security Working Group](https://erlef.org/wg/security).
 
+<div class="members">
+  <a href="https://www.erlang.org/">
+    <img src="/assets/img/erlang-logo.svg" alt="Erlang" />
+  </a>
+  <a href="https://erlef.org/">
+    <img src="/assets/img/eef-logo.svg" alt="Erlang Ecosystem Foundation" />
+  </a>
+  <a href="https://elixir-lang.org/">
+    <img src="/assets/img/elixir-logo.png" alt="Elixir" />
+  </a>
+  <a href="https://gleam.run/">
+    <img src="/assets/img/gleam-logo.svg" alt="Gleam" />
+  </a>
+  <a href="https://hex.pm/">
+    <img src="/assets/img/hex-logo.png" alt="Hex.pm" />
+  </a>
+</div>
+
 By following the globally recognized CVE standard, this joint venture ensures a
 unified approach to identifying and addressing security issues across these
 communities.
