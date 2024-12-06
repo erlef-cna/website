@@ -27,4 +27,4 @@ footer:
       url: "https://github.com/erlef-cna"
 atom_feed:
   hide: true
-logo: https://raw.githubusercontent.com/erlef-cna/.github/refs/heads/main/profile/assets/erlef-logo-light.svg
+logo: assets/img/eef-logo-light.svg
