@@ -11,9 +11,7 @@ breadcrumbs: true
 > hosted under the GitHub organizations [@elixir-lang](https://github.com/elixir-lang),
 > [@erlang](https://github.com/erlang), [@erlef-cna](https://github.com/erlef-cna)
 > [@erlef](https://github.com/erlef), [@gleam-lang](https://github.com/gleam-lang),
-> and [@hexpm](https://github.com/hexpm) > This CNA does not assign CVE IDs for
-> retired packages on [Hex.pm](https://hex.pm/) or for archived repositories
-> within the specified GitHub organizations.
+> and [@hexpm](https://github.com/hexpm).
 
 ---
 
@@ -27,8 +25,3 @@ cover all active projects hosted under the following organizations:
 - [@erlef](https://github.com/erlef)
 - [@gleam-lang](https://github.com/gleam-lang)
 - [@hexpm](https://github.com/hexpm)
-
-**Excluded from our scope:**
-
-- Any packages that are marked as retired on Hex.pm.
-- Archived repositories within the specified organizations.
