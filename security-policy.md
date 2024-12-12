@@ -108,14 +108,12 @@ us assess and address the issue promptly:
 ### 5.2. Escalation
 
 - If the disputing party is unsatisfied with our final decision, they may
-  escalate the matter to our Root CNA, Red Hat, initiating a new dispute cycle.
+  escalate the matter to our Root CNA, initiating a new dispute cycle.
 
 ## 6. References to Root CNA Policies
 
 We adhere to the following policies and guidelines:
 
-- **Red Hat CNA Vulnerability Disclosure Policy:**
-  [Red Hat's Policy](https://access.redhat.com/articles/red_hat_cna_vulnerability_disclosure_policy)
 - **CVE Numbering Authority Operational Rules:**
   [CNA Rules](https://www.cve.org/ResourcesSupport/AllResources/CNARules/#section_4-4_CNA_Judgment)
 - **CVE Program Policy and Procedure for Disputing a CVE Record:**
