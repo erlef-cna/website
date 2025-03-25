@@ -16,7 +16,7 @@ page_gen:
   title_expr: 'record["containers"]["cna"]["title"] || record["cveMetadata"]["cveId"]'
 
 repository: erlef-cna/website
-remote_theme: erlef/eef-jekyll-theme@7d50d5677fc4e8121c69acbfc78cfe896f1d1aa4
+remote_theme: erlef/eef-jekyll-theme@v0.2.0
 
 sass:
   sass_dir: _sass
