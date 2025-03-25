@@ -1,5 +1,5 @@
 ---
-layout: single
+layout: page_with_toc
 title: Security Policy
 breadcrumbs: true
 ---

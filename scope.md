@@ -1,5 +1,5 @@
 ---
-layout: single
+layout: page
 title: Scope Definition
 breadcrumbs: true
 ---

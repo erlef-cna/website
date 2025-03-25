@@ -1,6 +1,6 @@
 ---
 title: Erlang Ecosystem Foundation CNA
-layout: archive
+layout: page
 ---
 
 ⚠️ **Note: This project is currently under construction and is not yet active.** ⚠️

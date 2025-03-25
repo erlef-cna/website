@@ -1,9 +1,0 @@
-main:
-  - title: "Issued CVE's"
-    url: "/cves"
-  - title: "Security Policy"
-    url: "/security-policy"
-  - title: "CNA Scope"
-    url: "/scope"
-  - title: "Contact"
-    url: "/contact"

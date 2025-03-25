@@ -1,11 +1,17 @@
 ---
-layout: single
-breadcrumbs: true
+layout: page
 ---
 
-<a href="https://osv.dev/vulnerability/{{ page.cveMetadata.cveId }}">
-  See on OSV.dev
-</a>
+<div class="row">
+  <a class="col" href="/cves/">
+    <span aria-hidden="true">&laquo;</span>
+    Back to all CVEs
+  </a>
+
+  <a class="col" href="https://osv.dev/vulnerability/{{ page.cveMetadata.cveId }}">
+    See on OSV.dev
+  </a>
+</div>
 
 {% if page.containers.cna.title %}
   <h2>Summary</h2>
