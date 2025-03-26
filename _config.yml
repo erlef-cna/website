@@ -14,6 +14,13 @@ page_gen:
   index_files: false
   name_expr: 'record["cveMetadata"]["cveId"]'
   title_expr: 'record["containers"]["cna"]["title"] || record["cveMetadata"]["cveId"]'
+  extension: html
+- data: cves
+  template: cve_json
+  dir: cves
+  index_files: false
+  name_expr: 'record["cveMetadata"]["cveId"]'
+  extension: json
 
 repository: erlef-cna/website
 remote_theme: erlef/eef-jekyll-theme@v0.2.0

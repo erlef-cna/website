@@ -52,3 +52,5 @@ breadcrumbs: true
     </tbody>
   </table>
 </div>
+
+CVE's can also be requested as a JSON: [`GET {{ site.baseurl }}/cves/index.json`]({{ site.baseurl }}/cves/index.json)

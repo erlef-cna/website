@@ -16,7 +16,7 @@ this initiative encompasses [Erlang](https://www.erlang.org/), [Erlang Ecosystem
 and [Hex.pm packages](https://hex.pm/packages) hosted by the
 [Erlang Ecosystem Foundation’s Security Working Group](https://erlef.org/wg/security).
 
-<div class="members">
+<p class="members mt-5 mb-5">
   <a href="https://www.erlang.org/">
     <img src="/assets/img/erlang-logo.svg" alt="Erlang" />
   </a>
@@ -32,7 +32,7 @@ and [Hex.pm packages](https://hex.pm/packages) hosted by the
   <a href="https://hex.pm/">
     <img src="/assets/img/hex-logo.png" alt="Hex.pm" />
   </a>
-</div>
+</p>
 
 By following the globally recognized CVE standard, this joint venture ensures a
 unified approach to identifying and addressing security issues across these
@@ -41,4 +41,4 @@ communities.
 * [Security Policy](./security-policy)
 * [CNA Scope](./scope)
 * [Contact](./contact)
-* [Issued CVE's](./cves)
+* [Issued CVE's](./cves/)

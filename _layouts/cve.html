@@ -1,91 +1,132 @@
 ---
-layout: page
+layout: default
 ---
+<header class="py-5 bg-brand" role="banner">
+  <div class="container">
+    <h1 class="mb-0 h3 font-weight-normal text-white text-balance">
+      {{ page.cveMetadata.cveId }}
+    </h1>
+    <h2 class="mb-0 text-white font-weight-bold display-4 text-balance mt-4">
+      {{ page.title }}
+    </h2>
+    <div class="mt-4 clearfix">
+      <a href="/cves/" class="float-left">
+        <span class="sr-only">Previous Page:</span>
+        <span aria-hidden="true">&laquo;</span>
+        Back to all CVEs
+      </a>
+      <a href="https://osv.dev/vulnerability/{{ page.cveMetadata.cveId }}" class="float-right">
+        <span class="sr-only">Next Page:</span>
+        See on OSV.dev
+        <span aria-hidden="true">&raquo;</span>
+      </a>
+    </div>
+  </div>
+</header>
+<main role="main">
+  <section class="p-3 bg-white">
+    <div class="container">
+      {% assign cvss = page.containers.cna.metrics | where: "format", "CVSS" %}
+      {% assign cwe = page.containers.cna.problemTypes | first | map: "descriptions" | first | where: "lang", "en" | where: "type", "CWE" | first %}
 
-<div class="row">
-  <a class="col" href="/cves/">
-    <span aria-hidden="true">&laquo;</span>
-    Back to all CVEs
-  </a>
+      {% if cvss or cwe %}
+        <dl class="row">
+          {% if cwe %}
+            <div class="col">
+              <dt>Weakness Type</dt>
+              <dd>
+                <a href="https://cwe.mitre.org/data/definitions/{{cwe.cweId | remove: "CWE-" }}.html">
+                  {{ cwe.description }}
+                </a>
+              </dd>
+            </div>
+          {% endif %}
+          {% if cvss %}
+            <div class="col">
+              <dt>CSSS Base Score</dt>
+              <dd>{{ cvss[0].cvssV4_0.baseScore }}</dd>
+            </div>
+            <div class="col">
+              <dt>Severity</dt>
+              <dd>{{ cvss[0].cvssV4_0.baseSeverity }}</dd>
+            </div>
+            <div class="col">
+              <dt>CVSS Vector</dt>
+              <dd>
+                <a href="https://nvd.nist.gov/site-scripts/cvss-v4-calculator-main/index.html#{{ cvss[0].cvssV4_0.vectorString }}">
+                  {{ cvss[0].cvssV4_0.vectorString | split: "/" | join: "/&ZeroWidthSpace;" }}</dd>
+                </a>
+            </div>
+          {% endif %}
+        </dl>
+      {% endif %}
 
-  <a class="col" href="https://osv.dev/vulnerability/{{ page.cveMetadata.cveId }}">
-    See on OSV.dev
-  </a>
-</div>
+      {% if page.containers.cna.title %}
+        <h2>Summary</h2>
 
-{% if page.containers.cna.title %}
-  <h2>Summary</h2>
+        {{ page.containers.cna.title }}
+      {% endif %}
 
-  {{ page.containers.cna.title }}
-{% endif %}
+      <h2>Vulnerability description</h2>
 
-<h2>Vulnerability description</h2>
+      {% assign description = page.containers.cna.descriptions | where: "lang", "en" | first %}
+      {% assign descriptionText = description.value | markdownify %}
+      {% assign descriptionHtml = description.supportingMedia | where: "type", "text/html" | first %}
 
-{% assign description = page.containers.cna.descriptions | where: "lang", "en" | first %}
-{% assign descriptionText = description.value | markdownify %}
-{% assign descriptionHtml = description.supportingMedia | where: "type", "text/html" | first %}
+      {{ descriptionHtml.value | default: descriptionText }}
 
-{{ descriptionHtml.value | default: descriptionText }}
+      {% assign references = page.containers.cna.references %}
+      {% if references %}
+        <h2>References</h2>
 
-{% assign cvss = page.containers.cna.metrics | where: "format", "CVSS" %}
-{% assign cwe = page.containers.cna.problemTypes | first | map: "descriptions" | first | where: "lang", "en" | where: "type", "CWE" | first %}
+        <ul>
+          {% for reference in references %}
+            <li>
+              <a href="{{ reference.url}}">
+                {{ reference.name | default: reference.url }}
+              </a>
+            </li>
+          {% endfor %}
+        </ul>
+      {% endif %}
 
-{% if cvss or cwe %}
-  <dl>
-    {% if cvss %}
-      <dt>CSSS Base Score</dt>
-      <dd>{{ cvss[0].cvssV4_0.baseScore }}</dd>
-      <dt>Severity</dt>
-      <dd>{{ cvss[0].cvssV4_0.baseSeverity }}</dd>
-      <dt>CVSS Vector</dt>
-      <dd>{{ cvss[0].cvssV4_0.vectorString }}</dd>
-    {% endif %}
-    {% if cwe %}
-      <dt>Weakness Type</dt>
-      <dd>{{ cwe.description }}</dd>
-    {% endif %}
-  </dl>
-{% endif %}
+      {% assign affected = page.containers.cna.affected %}
+      {% if affected %}
+        <h2>Affected</h2>
 
-{% assign references = page.containers.cna.references %}
-{% if references %}
-  <h2>References</h2>
+        {% for entry in affected %}
+          <h3>
+            {% case entry.collectionURL %}
+              {% when "https://repo.hex.pm" %}
+                Hex: <a href="https://hex.pm/packages/{{ entry.packageName }}">
+                  <code>{{ entry.packageName }}</code>
+                </a>
+              {% when "https://github.com" %}
+                GitHub: <a href="https://github.com/{{ entry.packageName }}">
+                  <code>{{ entry.packageName }}</code>
+                </a>
+              {% else %}
+                {{ entry.vendor }} / {{ entry.product }}
+            {% endcase %}
+          </h3>
 
-  <ul>
-    {% for reference in references %}
-      <li>
-        <a href="{{ reference.url}}">
-          {{ reference.name | default: reference.url }}
+          <ul>
+            {% for version in entry.versions %}
+              <li>
+                {{ version.status }}
+                {{ version.version }}
+              </li>
+            {% endfor %}
+          </ul>
+        {% endfor %}
+
+      {% endif %}
+
+      <p>
+        CVE can also be requested as a JSON: <a href="/cves/{{ page.cveMetadata.cveId | downcase }}.json">
+          <code>GET {{ site.baseurl }}/cves/{{ page.cveMetadata.cveId | downcase }}.json</code>
         </a>
-      </li>
-    {% endfor %}
-  </ul>
-{% endif %}
-
-{% assign affected = page.containers.cna.affected %}
-{% if affected %}
-  <h2>Affected</h2>
-
-  {% for entry in affected %}
-    <h3>
-      {% case entry.collectionURL %}
-        {% when "https://repo.hex.pm" %}
-          Hex: <code>{{ entry.packageName }}</code>
-        {% when "https://github.com" %}
-          GitHub: <code>{{ entry.packageName }}</code>
-        {% else %}
-          {{ entry.vendor }} / {{ entry.product }}
-      {% endcase %}
-    </h3>
-
-    <ul>
-      {% for version in entry.versions %}
-        <li>
-          {{ version.status }}
-          {{ version.version }}
-        </li>
-      {% endfor %}
-    </ul>
-  {% endfor %}
-
-{% endif %}
+      </p>
+    </div>
+  </section>
+</main>
