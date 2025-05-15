@@ -163,5 +163,4 @@ We adhere to the following policies and guidelines:
 - **Credit:** We will ask reporters if they wish to be credited, provided they
   are the first to report the vulnerability.
 
-<!-- TODO: Put date -->
-*This policy is effective as of [Date Placeholder] and is subject to change.*
+*This policy is effective as of 2025-05-13 and is subject to change.*
