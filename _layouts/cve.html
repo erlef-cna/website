@@ -161,9 +161,9 @@ layout: default
             <table class="table table-borderless table-sm mb-3">
               <thead class="thead-light">
                 <tr>
-                  <th scope="col">Module</th>
-                  <th scope="col">Source&nbsp;File</th>
-                  <th scope="col">Routine</th>
+                  {% if entry.modules %}<th scope="col">Module</th>{% endif %}
+                  {% if entry.programFiles %}<th scope="col">Source&nbsp;File</th>{% endif %}
+                  {% if entry.programRoutines %}<th scope="col">Routine</th>{% endif %}
                 </tr>
               </thead>
               <tbody>
@@ -173,11 +173,12 @@ layout: default
                 {%- assign max_rows = m_size -%}
                 {%- if f_size > max_rows -%}{% assign max_rows = f_size %}{%- endif -%}
                 {%- if r_size > max_rows -%}{% assign max_rows = r_size %}{%- endif -%}
-                {% for i in (0..max_rows-1) %}
+                {%- assign max_index = max_rows | minus: 1 -%}
+                {% for i in (0..max_index) %}
                   <tr>
-                    <td>{% if entry.modules[i] %}<code>{{ entry.modules[i] }}</code>{% endif %}</td>
-                    <td>{% if entry.programFiles[i] %}<code>{{ entry.programFiles[i] }}</code>{% endif %}</td>
-                    <td>{% if entry.programRoutines[i] %}<code>{{ entry.programRoutines[i].name | default: entry.programRoutines[i] }}</code>{% endif %}</td>
+                    {% if entry.modules %}<td>{% if entry.modules[i] %}<code>{{ entry.modules[i] }}</code>{% endif %}</td>{% endif %}
+                    {% if entry.programFiles %}<td>{% if entry.programFiles[i] %}<code>{{ entry.programFiles[i] }}</code>{% endif %}</td>{% endif %}
+                    {% if entry.programRoutines %}<td>{% if entry.programRoutines[i] %}<code>{{ entry.programRoutines[i].name }}</code>{% endif %}{% endif %}</td>
                   </tr>
                 {% endfor %}
               </tbody>
