@@ -9,6 +9,33 @@ layout: default
     <h2 class="mb-0 text-white font-weight-bold display-4 text-balance mt-4">
       {{ page.title }}
     </h2>
+
+
+    {%- comment -%} =====================
+         SHOW CVE TAGS
+         Possible values (per CNA rules):
+         - disputed
+         - unsupported-when-assigned
+         - exclusively-hosted-service
+         (others default to neutral styling)
+    {%- endcomment -%}
+    {%- assign cna_tags = page.containers.cna.tags -%}
+    {% if cna_tags and cna_tags.size > 0 %}
+      <div class="mt-3">
+        {% for tag in cna_tags %}
+          {%- assign tag_class = "secondary" -%}
+          {%- case tag -%}
+            {%- when "disputed" -%}{% assign tag_class = "warning" %}
+            {%- when "unsupported-when-assigned" -%}{% assign tag_class = "dark" %}
+            {%- when "exclusively-hosted-service" -%}{% assign tag_class = "info" %}
+            {%- when "withdrawn" -%}{% assign tag_class = "secondary" %}
+          {%- endcase -%}
+          {%- assign tag_label = tag | replace: "-", " " | capitalize -%}
+          <span class="badge badge-{{ tag_class }} mr-1 text-uppercase">{{ tag_label }}</span>
+        {% endfor %}
+      </div>
+    {% endif %}
+
     <div class="mt-4 clearfix">
       <a href="/cves/" class="float-left">
         <span class="sr-only">Previous Page:</span>
@@ -26,104 +53,233 @@ layout: default
 <main role="main">
   <section class="p-3 bg-white">
     <div class="container">
-      {% assign cvss = page.containers.cna.metrics | where: "format", "CVSS" %}
-      {% assign cwe = page.containers.cna.problemTypes | first | map: "descriptions" | first | where: "lang", "en" | where: "type", "CWE" | first %}
+      {%- comment -%} =====================
+           EXTRACT METRICS
+      {%- endcomment -%}
+      {%- assign metrics = page.containers.cna.metrics -%}
+      {%- assign cvss = nil -%}
+      {%- for m in metrics -%}
+        {%- if m.cvssV4_0 -%}{% assign cvss = m.cvssV4_0 %}{% endif -%}
+        {%- if m.cvssV3_1 and cvss == nil -%}{% assign cvss = m.cvssV3_1 %}{% endif -%}
+        {%- if m.cvssV3_0 and cvss == nil -%}{% assign cvss = m.cvssV3_0 %}{% endif -%}
+      {%- endfor -%}
+      {%- assign cwe_desc = page.containers.cna.problemTypes | first | map: "descriptions" | first | where: "lang", "en" | where: "type", "CWE" | first -%}
+      {%- assign capec_items = page.containers.cna.impacts | where_exp: "item", "item.capecId" -%}
 
-      {% if cvss or cwe %}
-        <dl class="row">
-          {% if cwe %}
-            <div class="col">
-              <dt>Weakness Type</dt>
-              <dd>
-                <a href="https://cwe.mitre.org/data/definitions/{{cwe.cweId | remove: "CWE-" }}.html">
-                  {{ cwe.description }}
+      <!-- ===============================
+           AT‑A‑GLANCE SECTION
+      ================================ -->
+      {% if cvss or cwe_desc or capec_items %}
+        <div class="row mb-5">
+          <!-- Left column : CWE + CAPEC -->
+          <div class="col-md-6">
+            {% if cwe_desc %}
+              <h3 class="h5">Weakness Type (CWE)</h3>
+              <p class="mb-3">
+                <a href="https://cwe.mitre.org/data/definitions/{{ cwe_desc.cweId | remove: "CWE-" }}.html">
+                  {{ cwe_desc.cweId }} — {{ cwe_desc.description }}
                 </a>
-              </dd>
-            </div>
-          {% endif %}
-          {% if cvss %}
-            <div class="col">
-              <dt>CSSS Base Score</dt>
-              <dd>{{ cvss[0].cvssV4_0.baseScore }}</dd>
-            </div>
-            <div class="col">
-              <dt>Severity</dt>
-              <dd>{{ cvss[0].cvssV4_0.baseSeverity }}</dd>
-            </div>
-            <div class="col">
-              <dt>CVSS Vector</dt>
-              <dd>
-                <a href="https://nvd.nist.gov/site-scripts/cvss-v4-calculator-main/index.html#{{ cvss[0].cvssV4_0.vectorString }}">
-                  {{ cvss[0].cvssV4_0.vectorString | split: "/" | join: "/&ZeroWidthSpace;" }}</dd>
-                </a>
-            </div>
-          {% endif %}
-        </dl>
+              </p>
+            {% endif %}
+
+            {% if capec_items and capec_items.size > 0 %}
+              <h3 class="h5">CAPEC</h3>
+              <ul class="list-unstyled mb-0">
+                {% for capec in capec_items %}
+                  {% assign capec_en = capec.descriptions | where: "lang", "en" | first %}
+                  <li>
+                    <a href="https://capec.mitre.org/data/definitions/{{ capec.capecId | remove: "CAPEC-" }}.html">
+                      {{ capec.capecId }} — {{ capec_en.value }}
+                    </a>
+                  </li>
+                {% endfor %}
+              </ul>
+            {% endif %}
+          </div>
+
+          <!-- Right column : CVSS -->
+          <div class="col-md-6">
+            {% if cvss %}
+              <h3 class="h5">CVSS {{ cvss.version | default: "" }} Score</h3>
+              {% assign sev_class = "secondary" %}
+              {% case cvss.baseSeverity %}
+                {% when "NONE" %}{% assign sev_class = "secondary" %}
+                {% when "LOW" %}{% assign sev_class = "success" %}
+                {% when "MEDIUM" %}{% assign sev_class = "warning" %}
+                {% when "HIGH" %}{% assign sev_class = "danger" %}
+                {% when "CRITICAL" %}{% assign sev_class = "dark" %}
+              {% endcase %}
+              <p class="display-4 font-weight-bold mb-1">
+                {{ cvss.baseScore }}
+              </p>
+              <span class="badge badge-{{ sev_class }} mb-2 text-uppercase">
+                {{ cvss.baseSeverity }}
+              </span>
+              <p class="small mb-0">
+                {% if cvss.version == "4.0" %}
+                  <a href="https://nvd.nist.gov/site-scripts/cvss-v4-calculator-main/index.html#{{ cvss.vectorString }}">
+                    <code>{{ cvss.vectorString }}</code>
+                  </a>
+                {% elsif cvss.version == "3.1" %}
+                  <a href="https://chandanbn.github.io/cvss/#{{ cvss.vectorString }}">
+                    <code>{{ cvss.vectorString }}</code>
+                  </a>
+                {% else %}
+                  <code>{{ cvss.vectorString }}</code>
+                {% endif %}
+              </p>
+            {% endif %}
+          </div>
+        </div>
       {% endif %}
 
-      {% if page.containers.cna.title %}
-        <h2>Summary</h2>
-
-        {{ page.containers.cna.title }}
-      {% endif %}
-
+      <!-- ===============================
+           VULNERABILITY DESCRIPTION
+      ================================ -->
       <h2>Vulnerability description</h2>
-
-      {% assign description = page.containers.cna.descriptions | where: "lang", "en" | first %}
-      {% assign descriptionText = description.value | markdownify %}
-      {% assign descriptionHtml = description.supportingMedia | where: "type", "text/html" | first %}
-
+      {%- assign description = page.containers.cna.descriptions | where: "lang", "en" | first -%}
+      {%- assign descriptionText = description.value | markdownify -%}
+      {%- assign descriptionHtml = description.supportingMedia | where: "type", "text/html" | first -%}
       {{ descriptionHtml.value | default: descriptionText }}
 
-      {% assign references = page.containers.cna.references %}
+      <!-- ===============================
+           AFFECTED / FIXED VERSIONS
+      ================================ -->
+      {%- assign affected_list = page.containers.cna.affected -%}
+      {% if affected_list %}
+        <h2>Affected</h2>
+        {% for entry in affected_list %}
+          <h3 class="h6 text-uppercase mt-4">
+            {{ entry.vendor }} / {{ entry.product }}
+            {% if entry.modules %}
+              &nbsp;&raquo;&nbsp;<code>{{ entry.modules | join: ", " }}</code>
+            {% endif %}
+          </h3>
+
+          {% comment %} ================= COMPONENTS TABLE ================= {% endcomment %}
+          {% if entry.modules or entry.programFiles or entry.programRoutines %}
+            <table class="table table-borderless table-sm mb-3">
+              <thead class="thead-light">
+                <tr>
+                  <th scope="col">Module</th>
+                  <th scope="col">Source&nbsp;File</th>
+                  <th scope="col">Routine</th>
+                </tr>
+              </thead>
+              <tbody>
+                {%- assign m_size = entry.modules | size | default: 0 -%}
+                {%- assign f_size = entry.programFiles | size | default: 0 -%}
+                {%- assign r_size = entry.programRoutines | size | default: 0 -%}
+                {%- assign max_rows = m_size -%}
+                {%- if f_size > max_rows -%}{% assign max_rows = f_size %}{%- endif -%}
+                {%- if r_size > max_rows -%}{% assign max_rows = r_size %}{%- endif -%}
+                {% for i in (0..max_rows-1) %}
+                  <tr>
+                    <td>{% if entry.modules[i] %}<code>{{ entry.modules[i] }}</code>{% endif %}</td>
+                    <td>{% if entry.programFiles[i] %}<code>{{ entry.programFiles[i] }}</code>{% endif %}</td>
+                    <td>{% if entry.programRoutines[i] %}<code>{{ entry.programRoutines[i].name | default: entry.programRoutines[i] }}</code>{% endif %}</td>
+                  </tr>
+                {% endfor %}
+              </tbody>
+            </table>
+          {% endif %}
+
+          {% comment %} ================= VERSIONS TABLE ================= {% endcomment %}
+          {% assign has_changes = false %}
+          {% for v in entry.versions %}
+            {% if v.changes and v.changes.size > 0 %}{% assign has_changes = true %}{% endif %}
+            {% if v.lessThan %}{% assign has_changes = true %}{% endif %}
+          {% endfor %}
+
+          <table class="table table-sm">
+            <thead class="thead-light">
+              <tr>
+                <th>Status</th>
+                <th>Version</th>
+                {% if has_changes %}<th>Changes / Fixed in</th>{% endif %}
+              </tr>
+            </thead>
+            <tbody>
+              {% for version in entry.versions %}
+                <tr>
+                  <td class="font-weight-bold text-capitalize">{{ version.status }}</td>
+                  <td><code>{{ version.version }}</code></td>
+                  {% if has_changes %}
+                    <td>
+                      {% if version.changes and version.changes.size > 0 %}
+                        <ul class="mb-0 pl-3">
+                          {% for change in version.changes %}
+                            <li>{{ change.status }} at <code>{{ change.at }}</code></li>
+                          {% endfor %}
+                        </ul>
+                      {% elsif version.lessThan %}
+                        &lt; <code>{{ version.lessThan }}</code>
+                      {% endif %}
+                    </td>
+                  {% endif %}
+                </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        {% endfor %}
+      {% endif %}
+
+      <!-- ===============================
+           WORKAROUNDS
+      ================================ -->
+      {%- assign workarounds = page.containers.cna.workarounds | where: "lang", "en" -%}
+      {% if workarounds and workarounds.size > 0 %}
+        <h2>Workarounds</h2>
+        {%- assign wa = workarounds[0] -%}
+        {%- assign wa_html = wa.supportingMedia | where: "type", "text/html" | first -%}
+        {{ wa_html.value | default: wa.value | markdownify }}
+      {% endif %}
+
+      <!-- ===============================
+           REFERENCES
+      ================================ -->
+      {%- assign references = page.containers.cna.references -%}
       {% if references %}
         <h2>References</h2>
-
-        <ul>
-          {% for reference in references %}
-            <li>
-              <a href="{{ reference.url}}">
-                {{ reference.name | default: reference.url }}
-              </a>
+        <ul class="pl-3">
+          {% for ref in references %}
+            <li class="mb-1">
+              <a href="{{ ref.url }}">{{ ref.name | default: ref.url }}</a>
+              {% if ref.tags %}
+                {% for tag in ref.tags %}
+                  {% assign tag_class = "secondary" %}
+                  {% case tag %}
+                    {% when "vendor-advisory" %}{% assign tag_class = "warning" %}
+                    {% when "mitigation" %}{% assign tag_class = "info" %}
+                    {% when "exploit" %}{% assign tag_class = "danger" %}
+                  {% endcase %}
+                  <span class="badge badge-{{ tag_class }} ml-1">{{ tag }}</span>
+                {% endfor %}
+              {% endif %}
             </li>
           {% endfor %}
         </ul>
       {% endif %}
 
-      {% assign affected = page.containers.cna.affected %}
-      {% if affected %}
-        <h2>Affected</h2>
-
-        {% for entry in affected %}
-          <h3>
-            {% case entry.collectionURL %}
-              {% when "https://repo.hex.pm" %}
-                Hex: <a href="https://hex.pm/packages/{{ entry.packageName }}">
-                  <code>{{ entry.packageName }}</code>
-                </a>
-              {% when "https://github.com" %}
-                GitHub: <a href="https://github.com/{{ entry.packageName }}">
-                  <code>{{ entry.packageName }}</code>
-                </a>
-              {% else %}
-                {{ entry.vendor }} / {{ entry.product }}
-            {% endcase %}
-          </h3>
-
-          <ul>
-            {% for version in entry.versions %}
-              <li>
-                {{ version.status }}
-                {{ version.version }}
-              </li>
-            {% endfor %}
-          </ul>
-        {% endfor %}
-
+      <!-- ===============================
+           CREDITS
+      ================================ -->
+      {%- assign credits = page.containers.cna.credits -%}
+      {% if credits %}
+        <h2>Credits</h2>
+        <ul class="pl-3">
+          {% for credit in credits %}
+            <li><strong>{{ credit.type | replace: "_", " " | capitalize }}</strong>: {{ credit.value }}</li>
+          {% endfor %}
+        </ul>
       {% endif %}
 
-      <p>
-        CVE can also be requested as a JSON: <a href="/cves/{{ page.cveMetadata.cveId | downcase }}.json">
+      <!-- ===============================
+           JSON LINK
+      ================================ -->
+      <p class="mt-5 small text-muted">
+        CVE record as JSON:&nbsp;
+        <a href="/cves/{{ page.cveMetadata.cveId | downcase }}.json">
           <code>GET {{ site.baseurl }}/cves/{{ page.cveMetadata.cveId | downcase }}.json</code>
         </a>
       </p>

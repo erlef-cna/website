@@ -22,7 +22,7 @@ breadcrumbs: true
           <tr>
             <th scope="row">
               <a href="{{ site.baseurl }}/cves/{{ cve[0] | downcase }}.html">
-                {{ cve[1].containers.cna.title }}
+                {{ cve[1].containers.cna.title | default: cve[0] }}
               </a>
             </th>
             <td>
