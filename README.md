@@ -6,10 +6,6 @@
 
 ---
 
-:warning: **Note: This project is currently under construction and is not yet active.** :warning:
-
----
-
 # How to see documentation locally
 
 Requirerments:
