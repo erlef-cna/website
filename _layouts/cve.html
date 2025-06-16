@@ -158,31 +158,33 @@ layout: default
 
           {% comment %} ================= COMPONENTS TABLE ================= {% endcomment %}
           {% if entry.modules or entry.programFiles or entry.programRoutines %}
-            <table class="table table-borderless table-sm mb-3">
-              <thead class="thead-light">
-                <tr>
-                  {% if entry.modules %}<th scope="col">Module</th>{% endif %}
-                  {% if entry.programFiles %}<th scope="col">Source&nbsp;File</th>{% endif %}
-                  {% if entry.programRoutines %}<th scope="col">Routine</th>{% endif %}
-                </tr>
-              </thead>
-              <tbody>
-                {%- assign m_size = entry.modules | size | default: 0 -%}
-                {%- assign f_size = entry.programFiles | size | default: 0 -%}
-                {%- assign r_size = entry.programRoutines | size | default: 0 -%}
-                {%- assign max_rows = m_size -%}
-                {%- if f_size > max_rows -%}{% assign max_rows = f_size %}{%- endif -%}
-                {%- if r_size > max_rows -%}{% assign max_rows = r_size %}{%- endif -%}
-                {%- assign max_index = max_rows | minus: 1 -%}
-                {% for i in (0..max_index) %}
+            <div class="table-responsive">
+              <table class="table table-borderless table-sm mb-3">
+                <thead class="thead-light">
                   <tr>
-                    {% if entry.modules %}<td>{% if entry.modules[i] %}<code>{{ entry.modules[i] }}</code>{% endif %}</td>{% endif %}
-                    {% if entry.programFiles %}<td>{% if entry.programFiles[i] %}<code>{{ entry.programFiles[i] }}</code>{% endif %}</td>{% endif %}
-                    {% if entry.programRoutines %}<td>{% if entry.programRoutines[i] %}<code>{{ entry.programRoutines[i].name }}</code>{% endif %}{% endif %}</td>
+                    {% if entry.modules %}<th scope="col">Module</th>{% endif %}
+                    {% if entry.programFiles %}<th scope="col">Source&nbsp;File</th>{% endif %}
+                    {% if entry.programRoutines %}<th scope="col">Routine</th>{% endif %}
                   </tr>
-                {% endfor %}
-              </tbody>
-            </table>
+                </thead>
+                <tbody>
+                  {%- assign m_size = entry.modules | size | default: 0 -%}
+                  {%- assign f_size = entry.programFiles | size | default: 0 -%}
+                  {%- assign r_size = entry.programRoutines | size | default: 0 -%}
+                  {%- assign max_rows = m_size -%}
+                  {%- if f_size > max_rows -%}{% assign max_rows = f_size %}{%- endif -%}
+                  {%- if r_size > max_rows -%}{% assign max_rows = r_size %}{%- endif -%}
+                  {%- assign max_index = max_rows | minus: 1 -%}
+                  {% for i in (0..max_index) %}
+                    <tr>
+                      {% if entry.modules %}<td>{% if entry.modules[i] %}<code>{{ entry.modules[i] }}</code>{% endif %}</td>{% endif %}
+                      {% if entry.programFiles %}<td>{% if entry.programFiles[i] %}<code>{{ entry.programFiles[i] }}</code>{% endif %}</td>{% endif %}
+                      {% if entry.programRoutines %}<td>{% if entry.programRoutines[i] %}<code>{{ entry.programRoutines[i].name }}</code>{% endif %}{% endif %}</td>
+                    </tr>
+                  {% endfor %}
+                </tbody>
+              </table>
+            </div>
           {% endif %}
 
           {% comment %} ================= VERSIONS TABLE ================= {% endcomment %}
@@ -192,36 +194,38 @@ layout: default
             {% if v.lessThan %}{% assign has_changes = true %}{% endif %}
           {% endfor %}
 
-          <table class="table table-sm">
-            <thead class="thead-light">
-              <tr>
-                <th>Status</th>
-                <th>Version</th>
-                {% if has_changes %}<th>Changes / Fixed in</th>{% endif %}
-              </tr>
-            </thead>
-            <tbody>
-              {% for version in entry.versions %}
+          <div class="table-responsive">
+            <table class="table table-striped table-borderless table-sm mb-3">
+              <thead class="thead-light">
                 <tr>
-                  <td class="font-weight-bold text-capitalize">{{ version.status }}</td>
-                  <td><code>{{ version.version }}</code></td>
-                  {% if has_changes %}
-                    <td>
-                      {% if version.changes and version.changes.size > 0 %}
-                        <ul class="mb-0 pl-3">
-                          {% for change in version.changes %}
-                            <li>{{ change.status }} at <code>{{ change.at }}</code></li>
-                          {% endfor %}
-                        </ul>
-                      {% elsif version.lessThan %}
-                        &lt; <code>{{ version.lessThan }}</code>
-                      {% endif %}
-                    </td>
-                  {% endif %}
+                  <th>Status</th>
+                  <th>Version</th>
+                  {% if has_changes %}<th>Changes / Fixed in</th>{% endif %}
                 </tr>
-              {% endfor %}
-            </tbody>
-          </table>
+              </thead>
+              <tbody>
+                {% for version in entry.versions %}
+                  <tr>
+                    <td class="font-weight-bold text-capitalize">{{ version.status }}</td>
+                    <td><code>{{ version.version }}</code></td>
+                    {% if has_changes %}
+                      <td>
+                        {% if version.changes and version.changes.size > 0 %}
+                          <ul class="mb-0 pl-3">
+                            {% for change in version.changes %}
+                              <li>{{ change.status }} at <code>{{ change.at }}</code></li>
+                            {% endfor %}
+                          </ul>
+                        {% elsif version.lessThan %}
+                          &lt; <code>{{ version.lessThan }}</code>
+                        {% endif %}
+                      </td>
+                    {% endif %}
+                  </tr>
+                {% endfor %}
+              </tbody>
+            </table>
+          </div>
         {% endfor %}
       {% endif %}
 
