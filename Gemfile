@@ -4,3 +4,4 @@ gem "webrick", "~> 1.9"
 
 gem "github-pages", group: :jekyll_plugins
 gem "jekyll-datapage-generator", "~> 1.4", group: :jekyll_plugins
+gem "jekyll-sitemap", "~> 1.4", group: :jekyll_plugins

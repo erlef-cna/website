@@ -278,6 +278,7 @@ PLATFORMS
 DEPENDENCIES
   github-pages
   jekyll-datapage-generator (~> 1.4)
+  jekyll-sitemap (~> 1.4)
   webrick (~> 1.9)
 
 BUNDLED WITH

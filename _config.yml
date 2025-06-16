@@ -5,6 +5,7 @@ plugins:
 - jekyll-remote-theme
 - jekyll-datapage-generator
 - jekyll-include-cache
+- jekyll-sitemap
 
 page_gen-dirs: true
 page_gen:
