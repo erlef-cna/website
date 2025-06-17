@@ -6,8 +6,11 @@ layout: default
     <h1 class="mb-0 h3 font-weight-normal text-white text-balance">
       {{ page.cveMetadata.cveId }}
     </h1>
-    <h2 class="mb-0 text-white font-weight-bold display-4 text-balance mt-4">
-      {{ page.title }}
+    <h2 class="mb-0 text-white font-weight-bold display-4 text-balance mt-4 text-break">
+      {%- comment -%}
+        Append zero-width spaces after underscores for better line breaks in package names on mobile
+      {%- endcomment -%}
+      {{ page.title | replace: "_", "_<wbr>" }}
     </h2>
 
 
