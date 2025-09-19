@@ -89,7 +89,7 @@ Participants **must**:
 | ------------------------------------------------ | ------------------------------------------------------------------- |
 | **Information already public**                   | Immediate publication.                                              |
 | **Erlang / Elixir / Gleam core vulnerabilities** | Up to **7 days**.                                                   |
-| **Hex.pm package vulnerabilities**               | Publication date determined by the maintainer (maximum **7 days**). |
+| **Hex.pm package vulnerabilities**               | Publication date set by the maintainer, but must not exceed **7 days** from notification. |
 {: .table.table-striped.table-borderless }
 
 We strive to meet these timelines but may adapt them at the
