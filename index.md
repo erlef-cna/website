@@ -40,3 +40,4 @@ communities.
 * [CNA Scope](./scope)
 * [Contact](./contact)
 * [Issued CVE's](./cves/)
+* [Pre-Disclosure List](./pre-disclosure-list)
