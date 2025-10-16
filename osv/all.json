@@ -1,0 +1,8 @@
+---
+---
+[
+  {%- for osv in site.data.osv -%}
+    {"id": {{ osv[1].id | jsonify }}, "modified": {{ osv[1].modified | jsonify }}}
+    {%- unless forloop.last %},{% endunless -%}
+  {%- endfor -%}
+]

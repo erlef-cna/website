@@ -2,7 +2,7 @@
 ---
 [
   {%- for cve in site.data.cves -%}
-    {"id": {{ cve[0] | jsonify }}, "title": {{ cve[1].containers.cna.title | jsonify }}, "datePublished": {{ cve[1].cveMetadata.datePublished | jsonify }}, "dateUpdated": {{ cve[1].cveMetadata.dateUpdated | jsonify }}, "details": "{{ site.baseurl }}/cves/{{ cve[0] | downcase }}.json"}
+    {"id": {{ cve[0] | jsonify }}, "title": {{ cve[1].containers.cna.title | jsonify }}, "datePublished": {{ cve[1].cveMetadata.datePublished | jsonify }}, "dateUpdated": {{ cve[1].cveMetadata.dateUpdated | jsonify }}, "details": "{{ site.baseurl }}/cves/{{ cve[0] }}.json"}
     {%- unless forloop.last %},{% endunless -%}
   {%- endfor -%}
 ]

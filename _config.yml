@@ -22,9 +22,20 @@ page_gen:
   index_files: false
   name_expr: 'record["cveMetadata"]["cveId"]'
   extension: json
+  page_data_prefix: cve
+- data: osv
+  template: osv_json
+  dir: osv
+  index_files: false
+  name_expr: 'record["id"]'
+  extension: json
+  page_data_prefix: osv
 
 repository: erlef-cna/website
 remote_theme: erlef/eef-jekyll-theme@v0.2.0
+
+# Disable safe mode to allow custom plugins
+safe: false
 
 sass:
   sass_dir: _sass
