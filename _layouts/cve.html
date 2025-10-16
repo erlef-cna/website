@@ -45,6 +45,10 @@ layout: default
         <span aria-hidden="true">&laquo;</span>
         Back to all CVEs
       </a>
+      <!--
+        TODO: Add EEF- Prefix to link once our integration is up to point at the
+        OSV record and not the CVE conversion one.
+      -->
       <a href="https://osv.dev/vulnerability/{{ page.cveMetadata.cveId }}" class="float-right">
         <span class="sr-only">Next Page:</span>
         See on OSV.dev
@@ -287,9 +291,18 @@ layout: default
       ================================ -->
       <p class="mt-5 small text-muted">
         CVE record as JSON:&nbsp;
-        <a href="/cves/{{ page.cveMetadata.cveId | downcase }}.json">
-          <code>GET {{ site.baseurl }}/cves/{{ page.cveMetadata.cveId | downcase }}.json</code>
+        <a href="/cves/{{ page.cveMetadata.cveId }}.json">
+          <code>GET {{ site.baseurl }}/cves/{{ page.cveMetadata.cveId }}.json</code>
         </a>
+        {%- assign osv_id = "EEF-" | append: page.cveMetadata.cveId -%}
+        {%- assign osv_data = site.data.osv[osv_id] -%}
+        {% if osv_data %}
+          <br>
+          OSV record as JSON:&nbsp;
+          <a href="/osv/{{ osv_id }}.json">
+            <code>GET {{ site.baseurl }}/osv/{{ osv_id }}.json</code>
+          </a>
+        {% endif %}
       </p>
     </div>
   </section>

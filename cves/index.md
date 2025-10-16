@@ -18,10 +18,10 @@ breadcrumbs: true
     <tbody>
       {% assign cveNum = site.data.cves | size %}
       {% if cveNum > 0 %}
-        {% for cve in site.data.cves %}
+        {% for cve in site.data.cves reversed %}
           <tr>
             <th scope="row">
-              <a href="{{ site.baseurl }}/cves/{{ cve[0] | downcase }}.html">
+              <a href="{{ site.baseurl }}/cves/{{ cve[0] }}.html">
                 {{ cve[1].containers.cna.title | default: cve[0] }}
               </a>
             </th>
@@ -42,7 +42,7 @@ breadcrumbs: true
               </ul>
             </td>
             <td>
-              <a href="{{ site.baseurl }}/cves/{{ cve[0] | downcase }}.html">
+              <a href="{{ site.baseurl }}/cves/{{ cve[0] }}.html">
                 {{ cve[0] }}
               </a>
             </td>
@@ -59,4 +59,6 @@ breadcrumbs: true
   </table>
 </div>
 
-CVE's can also be requested as a JSON: [`GET {{ site.baseurl }}/cves/index.json`]({{ site.baseurl }}/cves/index.json)
+CVE's can also be requested as a JSON: [`GET {{ "cves/index.json" | relative_url }}`]({{ "cves/index.json" | relative_url }})
+
+OSV records can also be requested as a JSON: [`GET {{ "osv/all.json" | relative_url }}`]({{ "osv/all.json" | relative_url }})
