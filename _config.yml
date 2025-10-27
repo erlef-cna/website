@@ -6,6 +6,7 @@ plugins:
 - jekyll-datapage-generator
 - jekyll-include-cache
 - jekyll-sitemap
+- jekyll-redirect-from
 
 page_gen-dirs: true
 page_gen:
