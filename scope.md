@@ -14,7 +14,9 @@ Our CNA assigns CVE IDs for:
     active projects hosted under the GitHub organizations
     [@elixir-lang](https://github.com/elixir-lang), [@erlang](https://github.com/erlang),
     [@erlef-cna](https://github.com/erlef-cna), [@erlef](https://github.com/erlef),
-    [@gleam-lang](https://github.com/gleam-lang), and [@hexpm](https://github.com/hexpm),
+    [@gleam-lang](https://github.com/gleam-lang), [@hexpm](https://github.com/hexpm),
+    [@nerves-hub](https://github.com/nerves-hub), [@nerves-project](https://github.com/nerves-project),
+    and [@OpenRiak](https://github.com/OpenRiak)
     unless covered by the scope of another CNA.
   </p>
 </blockquote>

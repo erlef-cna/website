@@ -11,6 +11,7 @@ documenting, and mitigating security vulnerabilities.
 As a [CNA (CVE Numbering Authority)](https://www.cve.org/programorganization/cnas),
 this initiative encompasses [Erlang](https://www.erlang.org/), [Erlang Ecosystem Foundation](https://erlef.org/),
 [Elixir](https://elixir-lang.org/), [Gleam](https://gleam.run/), [Hex.pm](https://hex.pm),
+[Nerves](https://nerves-project.org/), [OpenRiak](https://openriak.org/),
 and [Hex.pm packages](https://hex.pm/packages) hosted by the
 [Erlang Ecosystem Foundation’s Security Working Group](https://erlef.org/wg/security).
 
@@ -29,6 +30,12 @@ and [Hex.pm packages](https://hex.pm/packages) hosted by the
   </a>
   <a href="https://hex.pm/">
     <img src="/assets/img/hex-logo.png" alt="Hex.pm" />
+  </a>
+  <a href="https://nerves-project.org/">
+    <img src="/assets/img/nerves-logo.svg" alt="Nerves" />
+  </a>
+  <a href="https://openriak.org/">
+    <img src="/assets/img/openriak-logo.png" alt="OpenRiak" />
   </a>
 </p>
 
