@@ -45,11 +45,7 @@ layout: default
         <span aria-hidden="true">&laquo;</span>
         Back to all CVEs
       </a>
-      <!--
-        TODO: Add EEF- Prefix to link once our integration is up to point at the
-        OSV record and not the CVE conversion one.
-      -->
-      <a href="https://osv.dev/vulnerability/{{ page.cveMetadata.cveId }}" class="float-right">
+      <a href="https://osv.dev/vulnerability/EEF-{{ page.cveMetadata.cveId }}" class="float-right">
         <span class="sr-only">Next Page:</span>
         See on OSV.dev
         <span aria-hidden="true">&raquo;</span>
