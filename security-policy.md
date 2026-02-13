@@ -68,7 +68,10 @@ vulnerabilities through the contact methods outlined on our
 ### 3.3. Maintainer Coordination
 
 - **Embargo Period:** We aim to publish vulnerabilities as soon as possible. The
-  maximum embargo period is **3 months**.
+  maximum embargo period is **3 months**. In some cases, advance notification
+  may be shared with trusted stakeholders via our
+  [Pre-Disclosure List](./pre-disclosure-list), subject to the eligibility and
+  confidentiality requirements described there.
 - **No Reply Scenario:** If maintainers do not respond within the specified
   timeframes, we will publish the CVE unilaterally.
 
@@ -131,7 +134,9 @@ We adhere to the following policies and guidelines:
 ### 7.2. Notification
 
 - **Community and Stakeholders:** We will notify relevant parties through our
-  publication process. Project maintainers are responsible for additional communications to their users.
+  publication process. Certain stakeholders may also receive advance notice
+  through our [Pre-Disclosure List](./pre-disclosure-list). Project maintainers
+  are responsible for additional communications to their users.
 
 ## Additional Information
 
