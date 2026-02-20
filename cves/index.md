@@ -28,21 +28,7 @@ breadcrumbs: true
             <td>
               <ul>
                 {% for publication in cve[1].containers.cna.affected %}
-                  <li>
-                    {%- if publication.packageURL %}
-                      <code>{{ publication.packageURL | split: "?" | first }}</code>
-                    {%- else %}
-                      {%- comment %} TODO: Remove this fallback once CVE 5.1 records have been migrated to 5.2 {% endcomment %}
-                      {% case publication.collectionURL %}
-                        {% when "https://repo.hex.pm" %}
-                          <code>pkg:hex/{{ publication.packageName }}</code>
-                        {% when "https://github.com" %}
-                          <code>pkg:github/{{ publication.packageName }}</code>
-                        {% else %}
-                          {{ publication.vendor }} / {{ publication.product }}
-                      {% endcase %}
-                    {%- endif %}
-                  </li>
+                  <li>{% include package-link.html entry=publication %}</li>
                 {% endfor %}
               </ul>
             </td>

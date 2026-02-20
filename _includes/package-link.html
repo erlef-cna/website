@@ -1,0 +1,43 @@
+{%- comment -%}
+  Renders a package/product reference with appropriate linking.
+
+  Parameters:
+    - include.entry: The affected entry object (with packageURL, collectionURL, packageName, vendor, product)
+    - include.link: Optional, if true wraps in a link to the package (default: false)
+{%- endcomment -%}
+{%- assign pkg_url = nil -%}
+{%- assign pkg_label = nil -%}
+{%- if include.entry.packageURL -%}
+  {%- assign purl = include.entry.packageURL | split: "?" | first -%}
+  {%- assign pkg_label = purl -%}
+  {%- if purl contains "pkg:hex/" -%}
+    {%- assign hex_name = purl | remove: "pkg:hex/" -%}
+    {%- assign pkg_url = "https://hex.pm/packages/" | append: hex_name -%}
+  {%- elsif purl contains "pkg:github/" -%}
+    {%- assign github_path = purl | remove: "pkg:github/" -%}
+    {%- assign pkg_url = "https://github.com/" | append: github_path -%}
+  {%- endif -%}
+{%- else -%}
+  {%- comment %} TODO: Remove this fallback once CVE 5.1 records have been migrated to 5.2 {% endcomment -%}
+  {%- case include.entry.collectionURL -%}
+    {%- when "https://repo.hex.pm" -%}
+      {%- assign pkg_label = "pkg:hex/" | append: include.entry.packageName -%}
+      {%- assign pkg_url = "https://hex.pm/packages/" | append: include.entry.packageName -%}
+    {%- when "https://github.com" -%}
+      {%- assign pkg_label = "pkg:github/" | append: include.entry.packageName -%}
+      {%- assign pkg_url = "https://github.com/" | append: include.entry.packageName -%}
+    {%- else -%}
+      {%- if include.entry.packageName and include.entry.packageName != include.entry.product -%}
+        {%- capture pkg_label %}{{ include.entry.vendor }} / {{ include.entry.product }} (<code>{{ include.entry.packageName }}</code>){%- endcapture -%}
+      {%- else -%}
+        {%- capture pkg_label %}{{ include.entry.vendor }} / {{ include.entry.product }}{%- endcapture -%}
+      {%- endif -%}
+  {%- endcase -%}
+{%- endif -%}
+{%- if include.link and pkg_url -%}
+  <a href="{{ pkg_url }}" target="_blank"><code>{{ pkg_label }}</code></a>
+{%- elsif pkg_label contains "<code>" -%}
+  {{ pkg_label }}
+{%- else -%}
+  <code>{{ pkg_label }}</code>
+{%- endif -%}

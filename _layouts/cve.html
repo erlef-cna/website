@@ -152,30 +152,15 @@ layout: default
       {% if affected_list %}
         <h2>Affected</h2>
         {% for entry in affected_list %}
-          <h3 class="h6 text-uppercase mt-4" style="--code-case: none;">
-            {%- if entry.packageURL %}
-              <code style="text-transform: none;">{{ entry.packageURL | split: "?" | first }}</code>
-            {%- else %}
-              {%- comment %} TODO: Remove this fallback once CVE 5.1 records have been migrated to 5.2 {% endcomment %}
-              {% case entry.collectionURL %}
-                {% when "https://repo.hex.pm" %}
-                  <code style="text-transform: none;">pkg:hex/{{ entry.packageName }}</code>
-                {% when "https://github.com" %}
-                  <code style="text-transform: none;">pkg:github/{{ entry.packageName }}</code>
-                {% else %}
-                  {{ entry.vendor }} / {{ entry.product }}
-                  {%- if entry.packageName and entry.packageName != entry.product %}
-                    (<code style="text-transform: none;">{{ entry.packageName }}</code>)
-                  {%- endif %}
-              {% endcase %}
-            {%- endif %}
-            {% if entry.modules %}
-              &nbsp;&raquo;&nbsp;<code>{{ entry.modules | join: ", " }}</code>
-            {% endif %}
+          <h3 class="h6 mt-4">
+            {%- include package-link.html entry=entry link=true %}
           </h3>
 
           {% comment %} ================= COMPONENTS TABLE ================= {% endcomment %}
           {% if entry.modules or entry.programFiles or entry.programRoutines %}
+            {%- assign git_version = entry.versions | where: "versionType", "git" | first -%}
+            {%- assign semver_version = entry.versions | where: "versionType", "semver" | first -%}
+            {%- assign repo_url = entry.repo | remove: ".git" -%}
             <div class="table-responsive">
               <table class="table table-borderless table-sm mb-3">
                 <thead class="thead-light">
@@ -195,9 +180,77 @@ layout: default
                   {%- assign max_index = max_rows | minus: 1 -%}
                   {% for i in (0..max_index) %}
                     <tr>
-                      {% if entry.modules %}<td>{% if entry.modules[i] %}<code>{{ entry.modules[i] }}</code>{% endif %}</td>{% endif %}
-                      {% if entry.programFiles %}<td>{% if entry.programFiles[i] %}<code>{{ entry.programFiles[i] }}</code>{% endif %}</td>{% endif %}
-                      {% if entry.programRoutines %}<td>{% if entry.programRoutines[i] %}<code>{{ entry.programRoutines[i].name }}</code>{% endif %}{% endif %}</td>
+                      {% if entry.modules %}<td>{% if entry.modules[i] %}
+                        {%- assign module_name = entry.modules[i] -%}
+                        {%- if module_name contains "'Elixir." -%}
+                          {%- comment -%} Elixir format: 'Elixir.Module.Sub' -> Module.Sub {%- endcomment -%}
+                          {%- assign module_display = module_name | remove: "'" | remove: "Elixir." -%}
+                          {%- if entry.packageURL contains "pkg:hex/" -%}
+                            {%- assign hex_name = entry.packageURL | split: "?" | first | remove: "pkg:hex/" -%}
+                            <a href="https://hexdocs.pm/{{ hex_name }}/{{ module_display }}.html" target="_blank"><code>{{ module_display }}</code></a>
+                          {%- else -%}
+                            <code>{{ module_display }}</code>
+                          {%- endif -%}
+                        {%- elsif entry.packageURL contains "pkg:otp/" and entry.vendor | downcase == "erlang" -%}
+                          {%- comment -%} OTP format: module -> link to erlang.org docs {%- endcomment -%}
+                          {%- assign otp_app = entry.packageURL | split: "?" | first | remove: "pkg:otp/" -%}
+                          <a href="https://www.erlang.org/doc/apps/{{ otp_app }}/{{ module_name }}.html" target="_blank"><code>{{ module_name }}</code></a>
+                        {%- else -%}
+                          {%- comment -%} Erlang format - display as-is {%- endcomment -%}
+                          <code>{{ module_name }}</code>
+                        {%- endif %}
+                      {% endif %}</td>{% endif %}
+                      {% if entry.programFiles %}<td>{% if entry.programFiles[i] %}
+                        {%- if git_version and repo_url contains "github.com" %}
+                          <a href="{{ repo_url }}/blob/{{ git_version.version }}/{{ entry.programFiles[i] }}" target="_blank"><code>{{ entry.programFiles[i] }}</code></a>
+                        {%- elsif entry.packageURL contains "pkg:hex/" and semver_version %}
+                          {%- assign hex_name = entry.packageURL | split: "?" | first | remove: "pkg:hex/" %}
+                          <a href="https://preview.hex.pm/preview/{{ hex_name }}/{{ semver_version.version }}/show/{{ entry.programFiles[i] }}" target="_blank"><code>{{ entry.programFiles[i] }}</code></a>
+                        {%- else %}
+                          <code>{{ entry.programFiles[i] }}</code>
+                        {%- endif %}
+                      {% endif %}</td>{% endif %}
+                      {% if entry.programRoutines %}<td>{% if entry.programRoutines[i] %}
+                        {%- assign routine_name = entry.programRoutines[i].name -%}
+                        {%- if routine_name contains "'Elixir." -%}
+                          {%- comment -%} Elixir format: 'Elixir.Module.Sub':func/2 -> Module.Sub.func/2 {%- endcomment -%}
+                          {%- assign routine_display = routine_name | remove: "'" | remove: "Elixir." | replace: ":", "." -%}
+                          {%- if entry.packageURL contains "pkg:hex/" -%}
+                            {%- assign hex_name = entry.packageURL | split: "?" | first | remove: "pkg:hex/" -%}
+                            {%- assign routine_parts = routine_display | split: "/" -%}
+                            {%- assign module_func = routine_parts[0] -%}
+                            {%- assign routine_arity = routine_parts[1] -%}
+                            {%- assign module_func_parts = module_func | split: "." -%}
+                            {%- assign routine_func = module_func_parts | last -%}
+                            {%- assign module_parts_size = module_func_parts.size | minus: 1 -%}
+                            {%- assign routine_module = "" -%}
+                            {%- for j in (0..module_parts_size) -%}
+                              {%- if j < module_parts_size -%}
+                                {%- if routine_module == "" -%}
+                                  {%- assign routine_module = module_func_parts[j] -%}
+                                {%- else -%}
+                                  {%- assign routine_module = routine_module | append: "." | append: module_func_parts[j] -%}
+                                {%- endif -%}
+                              {%- endif -%}
+                            {%- endfor -%}
+                            <a href="https://hexdocs.pm/{{ hex_name }}/{{ routine_module }}.html#{{ routine_func }}/{{ routine_arity }}" target="_blank"><code>{{ routine_display }}</code></a>
+                          {%- else -%}
+                            <code>{{ routine_display }}</code>
+                          {%- endif -%}
+                        {%- elsif entry.packageURL contains "pkg:otp/" and entry.vendor | downcase == "erlang" -%}
+                          {%- comment -%} OTP/Erlang format: module:func/2 {%- endcomment -%}
+                          {%- assign otp_app = entry.packageURL | split: "?" | first | remove: "pkg:otp/" -%}
+                          {%- assign routine_parts = routine_name | split: "/" -%}
+                          {%- assign routine_arity = routine_parts[1] -%}
+                          {%- assign module_func = routine_parts[0] | split: ":" -%}
+                          {%- assign routine_module = module_func[0] -%}
+                          {%- assign routine_func = module_func[1] -%}
+                          <a href="https://www.erlang.org/doc/apps/{{ otp_app }}/{{ routine_module }}.html#{{ routine_func }}/{{ routine_arity }}" target="_blank"><code>{{ routine_name }}</code></a>
+                        {%- else -%}
+                          {%- comment -%} Erlang format: module:func/2 - display as-is {%- endcomment -%}
+                          <code>{{ routine_name }}</code>
+                        {%- endif %}
+                      {% endif %}</td>{% endif %}
                     </tr>
                   {% endfor %}
                 </tbody>
@@ -238,17 +291,19 @@ layout: default
                         <a href="https://semver.org/" target="_blank" title="Semantic Versioning"><sup>ⓘ</sup></a>
                       {%- endif %}
                     </td>
-                    <td><code>{{ version.version }}</code></td>
+                    <td>
+                      {%- include version-link.html version=version.version version_type=version.versionType entry=entry %}
+                    </td>
                     {% if has_changes %}
                       <td>
                         {% if version.changes and version.changes.size > 0 %}
                           <ul class="mb-0 pl-3">
                             {% for change in version.changes %}
-                              <li>{{ change.status }} at <code>{{ change.at }}</code></li>
+                              <li>{{ change.status }} at {% include version-link.html version=change.at version_type=version.versionType entry=entry %}</li>
                             {% endfor %}
                           </ul>
                         {% elsif version.lessThan %}
-                          &lt; <code>{{ version.lessThan }}</code>
+                          &lt; {% include version-link.html version=version.lessThan version_type=version.versionType entry=entry %}
                         {% endif %}
                       </td>
                     {% endif %}

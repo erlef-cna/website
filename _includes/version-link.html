@@ -1,0 +1,21 @@
+{%- comment -%}
+  Renders a version reference with appropriate linking based on version type and package.
+
+  Parameters:
+    - include.version: The version string to display
+    - include.version_type: The type of version (git, otp, semver, etc.)
+    - include.entry: The affected entry object (for repo, packageName, packageURL)
+{%- endcomment -%}
+{%- if include.version == "0" -%}
+  <code>initial</code>
+{%- elsif include.version_type == "git" and include.entry.repo contains "github.com" -%}
+  {%- assign repo_url = include.entry.repo | remove: ".git" -%}
+  <a href="{{ repo_url }}/tree/{{ include.version }}" target="_blank"><code>{{ include.version | truncate: 12, "" }}</code></a>
+{%- elsif include.version_type == "otp" and include.entry.packageName == "erlang/otp" -%}
+  <a href="https://www.erlang.org/patches/otp-{{ include.version }}" target="_blank"><code>{{ include.version }}</code></a>
+{%- elsif include.version_type == "semver" and include.entry.packageURL contains "pkg:hex/" -%}
+  {%- assign hex_name = include.entry.packageURL | split: "?" | first | remove: "pkg:hex/" -%}
+  <a href="https://hex.pm/packages/{{ hex_name }}/{{ include.version }}" target="_blank"><code>{{ include.version }}</code></a>
+{%- else -%}
+  <code>{{ include.version }}</code>
+{%- endif -%}
