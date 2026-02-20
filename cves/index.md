@@ -29,14 +29,19 @@ breadcrumbs: true
               <ul>
                 {% for publication in cve[1].containers.cna.affected %}
                   <li>
-                    {% case publication.collectionURL %}
-                      {% when "https://repo.hex.pm" %}
-                        Hex: <code>{{ publication.packageName }}</code>
-                      {% when "https://github.com" %}
-                        GitHub: <code>{{ publication.packageName }}</code>
-                      {% else %}
-                        {{ publication.vendor }} {{ publication.product }}
-                    {% endcase %}
+                    {%- if publication.packageURL %}
+                      <code>{{ publication.packageURL | split: "?" | first }}</code>
+                    {%- else %}
+                      {%- comment %} TODO: Remove this fallback once CVE 5.1 records have been migrated to 5.2 {% endcomment %}
+                      {% case publication.collectionURL %}
+                        {% when "https://repo.hex.pm" %}
+                          <code>pkg:hex/{{ publication.packageName }}</code>
+                        {% when "https://github.com" %}
+                          <code>pkg:github/{{ publication.packageName }}</code>
+                        {% else %}
+                          {{ publication.vendor }} / {{ publication.product }}
+                      {% endcase %}
+                    {%- endif %}
                   </li>
                 {% endfor %}
               </ul>

@@ -152,8 +152,23 @@ layout: default
       {% if affected_list %}
         <h2>Affected</h2>
         {% for entry in affected_list %}
-          <h3 class="h6 text-uppercase mt-4">
-            {{ entry.vendor }} / {{ entry.product }}
+          <h3 class="h6 text-uppercase mt-4" style="--code-case: none;">
+            {%- if entry.packageURL %}
+              <code style="text-transform: none;">{{ entry.packageURL | split: "?" | first }}</code>
+            {%- else %}
+              {%- comment %} TODO: Remove this fallback once CVE 5.1 records have been migrated to 5.2 {% endcomment %}
+              {% case entry.collectionURL %}
+                {% when "https://repo.hex.pm" %}
+                  <code style="text-transform: none;">pkg:hex/{{ entry.packageName }}</code>
+                {% when "https://github.com" %}
+                  <code style="text-transform: none;">pkg:github/{{ entry.packageName }}</code>
+                {% else %}
+                  {{ entry.vendor }} / {{ entry.product }}
+                  {%- if entry.packageName and entry.packageName != entry.product %}
+                    (<code style="text-transform: none;">{{ entry.packageName }}</code>)
+                  {%- endif %}
+              {% endcase %}
+            {%- endif %}
             {% if entry.modules %}
               &nbsp;&raquo;&nbsp;<code>{{ entry.modules | join: ", " }}</code>
             {% endif %}
@@ -191,25 +206,38 @@ layout: default
           {% endif %}
 
           {% comment %} ================= VERSIONS TABLE ================= {% endcomment %}
+          {%- assign filtered_versions = entry.versions | where_exp: "v", "v.versionType != 'purl'" -%}
           {% assign has_changes = false %}
-          {% for v in entry.versions %}
+          {% for v in filtered_versions %}
             {% if v.changes and v.changes.size > 0 %}{% assign has_changes = true %}{% endif %}
             {% if v.lessThan %}{% assign has_changes = true %}{% endif %}
           {% endfor %}
 
+          {% if filtered_versions.size > 0 %}
           <div class="table-responsive">
             <table class="table table-striped table-borderless table-sm mb-3">
               <thead class="thead-light">
                 <tr>
                   <th>Status</th>
+                  <th>Type</th>
                   <th>Version</th>
                   {% if has_changes %}<th>Changes / Fixed in</th>{% endif %}
                 </tr>
               </thead>
               <tbody>
-                {% for version in entry.versions %}
+                {% for version in filtered_versions %}
                   <tr>
                     <td class="font-weight-bold text-capitalize">{{ version.status }}</td>
+                    <td>
+                      {{ version.versionType }}
+                      {%- if version.versionType == "otp" %}
+                        <a href="https://www.erlang.org/doc/system/versions.html#order-of-versions" target="_blank" title="OTP version ordering"><sup>ⓘ</sup></a>
+                      {%- elsif version.versionType == "git" %}
+                        <a href="https://github.com/CVEProject/cve-schema/blob/main/schema/docs/versions.md#source-control-versions" target="_blank" title="Git version scheme"><sup>ⓘ</sup></a>
+                      {%- elsif version.versionType == "semver" %}
+                        <a href="https://semver.org/" target="_blank" title="Semantic Versioning"><sup>ⓘ</sup></a>
+                      {%- endif %}
+                    </td>
                     <td><code>{{ version.version }}</code></td>
                     {% if has_changes %}
                       <td>
@@ -229,6 +257,7 @@ layout: default
               </tbody>
             </table>
           </div>
+          {% endif %}
         {% endfor %}
       {% endif %}
 
@@ -251,6 +280,7 @@ layout: default
         <h2>References</h2>
         <ul class="pl-3">
           {% for ref in references %}
+            {% if ref.tags contains "x_version-scheme" %}{% continue %}{% endif %}
             <li class="mb-1">
               <a href="{{ ref.url }}">{{ ref.name | default: ref.url }}</a>
               {% if ref.tags %}
