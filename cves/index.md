@@ -18,7 +18,8 @@ breadcrumbs: true
     <tbody>
       {% assign cveNum = site.data.cves | size %}
       {% if cveNum > 0 %}
-        {% for cve in site.data.cves reversed %}
+        {% assign sorted_cves = site.data.cves | sort_cves_by_date %}
+        {% for cve in sorted_cves %}
           <tr>
             <th scope="row">
               <a href="{{ site.baseurl }}/cves/{{ cve[0] }}.html">
