@@ -161,6 +161,7 @@ layout: default
             {%- assign git_version = entry.versions | where: "versionType", "git" | first -%}
             {%- assign semver_version = entry.versions | where: "versionType", "semver" | first -%}
             {%- assign repo_url = entry.repo | remove: ".git" -%}
+            {%- assign vendor_lower = entry.vendor | downcase -%}
             <div class="table-responsive">
               <table class="table table-borderless table-sm mb-3">
                 <thead class="thead-light">
@@ -191,7 +192,7 @@ layout: default
                           {%- else -%}
                             <code>{{ module_display }}</code>
                           {%- endif -%}
-                        {%- elsif entry.packageURL contains "pkg:otp/" and entry.vendor | downcase == "erlang" -%}
+                        {%- elsif entry.packageURL contains "pkg:otp/" and vendor_lower == "erlang" and entry.product != "rebar3" -%}
                           {%- comment -%} OTP format: module -> link to erlang.org docs {%- endcomment -%}
                           {%- assign otp_app = entry.packageURL | split: "?" | first | remove: "pkg:otp/" -%}
                           <a href="https://www.erlang.org/doc/apps/{{ otp_app }}/{{ module_name }}.html" target="_blank"><code>{{ module_name }}</code></a>
@@ -237,7 +238,7 @@ layout: default
                           {%- else -%}
                             <code>{{ routine_display }}</code>
                           {%- endif -%}
-                        {%- elsif entry.packageURL contains "pkg:otp/" and entry.vendor | downcase == "erlang" -%}
+                        {%- elsif entry.packageURL contains "pkg:otp/" and vendor_lower == "erlang" and entry.product != "rebar3" -%}
                           {%- comment -%} OTP/Erlang format: module:func/2 {%- endcomment -%}
                           {%- assign otp_app = entry.packageURL | split: "?" | first | remove: "pkg:otp/" -%}
                           {%- assign routine_parts = routine_name | split: "/" -%}
