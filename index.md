@@ -44,6 +44,7 @@ unified approach to identifying and addressing security issues across these
 communities.
 
 * [Security Policy](./security-policy)
+* [CVE Assignment Criteria](./cve-criteria)
 * [CNA Scope](./scope)
 * [Contact](./contact)
 * [Issued CVE's](./cves/)
