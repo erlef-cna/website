@@ -313,6 +313,14 @@ layout: default
               </tbody>
             </table>
           </div>
+          {% elsif entry.defaultStatus == "affected" %}
+            {% comment %} No version details but defaultStatus is affected - show all versions affected {% endcomment %}
+            <div class="alert alert-warning mb-3" role="alert">
+              <strong>All versions affected</strong><br>
+              No patched version is currently available. If a fix becomes available, please
+              <a href="/contact.html" class="alert-link">let us know</a>
+              so we can update this record.
+            </div>
           {% endif %}
         {% endfor %}
       {% endif %}
