@@ -169,4 +169,4 @@ including ecosystem-specific considerations for internal modules, see our
 - **Credit:** We will ask reporters if they wish to be credited, provided they
   are the first to report the vulnerability.
 
-*This policy is effective as of 2025-05-13, last updated 2026-03-06, and is subject to change.*
+*This policy is effective as of 2025-05-13, last updated 2026-03-23, and is subject to change.*
