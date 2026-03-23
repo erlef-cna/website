@@ -152,6 +152,12 @@ We adhere to the following policies and guidelines:
   such as those discussed in public issue trackers or actively exploited in the
   wild.
 
+### CVE Assignment Criteria
+
+For detailed guidance on what constitutes a CVE-worthy vulnerability,
+including ecosystem-specific considerations for internal modules, see our
+[CVE Assignment Criteria](/cve-criteria) page.
+
 ### Communication with Reporters
 
 - **Acknowledgment Receipts:** Reporters will receive an acknowledgment within
@@ -163,4 +169,4 @@ We adhere to the following policies and guidelines:
 - **Credit:** We will ask reporters if they wish to be credited, provided they
   are the first to report the vulnerability.
 
-*This policy is effective as of 2025-05-13 and is subject to change.*
+*This policy is effective as of 2025-05-13, last updated 2026-03-23, and is subject to change.*
