@@ -4,51 +4,75 @@ title: Contact
 breadcrumbs: true
 ---
 
-## Vulnerabilities
+<p class="lead">
+  We encourage security researchers and members of the community to report
+  vulnerabilities through the following contact methods.
+</p>
 
-We encourage security researchers and members of the community to report
-vulnerabilities through the following contact methods:
+## Report a Vulnerability
 
-- **Email:** [cna@erlef.org](mailto:cna@erlef.org)
-- **GPG Key:** For encrypted communications, please use our GPG key:
-  - **Public Key:** [GPG Public Key](https://keys.openpgp.org/vks/v1/by-fingerprint/38BD201B397E28F1F3D93EC76E031A811F266E21)
-  - **Fingerprint:** `38BD 201B 397E 28F1 F3D9 3EC7 6E03 1A81 1F26 6E21` 
+<div class="contact-grid">
+  <a href="mailto:cna@erlef.org" class="contact-card">
+    <i class="fas fa-envelope"></i>
+    <strong>Email</strong>
+    <span>cna@erlef.org</span>
+  </a>
+  <a href="https://keys.openpgp.org/vks/v1/by-fingerprint/38BD201B397E28F1F3D93EC76E031A811F266E21" class="contact-card">
+    <i class="fas fa-key"></i>
+    <strong>GPG Key</strong>
+    <span>For encrypted communications</span>
+  </a>
+</div>
 
-## Report via GitHub Private Vulnerability Reporting
+<div class="gpg-fingerprint">
+  <strong>Fingerprint:</strong> <code>38BD 201B 397E 28F1 F3D9 3EC7 6E03 1A81 1F26 6E21</code>
+</div>
 
-We also support direct integration with [GitHub Private Vulnerability Reporting](https://docs.github.com/en/code-security/security-advisories/guidance-on-reporting-and-writing-information-about-vulnerabilities/privately-reporting-a-security-vulnerability).
+## GitHub Private Vulnerability Reporting
 
-If you're using GitHub to report your vulnerability, you can invite our CNA
-Points of Contact (PoCs) directly into your private advisory instead of reaching
-out via email.
+We also support [GitHub Private Vulnerability Reporting](https://docs.github.com/en/code-security/security-advisories/guidance-on-reporting-and-writing-information-about-vulnerabilities/privately-reporting-a-security-vulnerability).
+You can invite our CNA Points of Contact directly into your private advisory.
 
-### Steps to collaborate with us on a GitHub Advisory
-
-1. **CVE Identifier**  
-   - When initially creating the advisory, choose:  
-     **"Request CVE ID later"**
-
-2. **Collaborators**  
-   - Add the following GitHub users as collaborators to the private advisory:
-     - `@IngelaAndin` – Ingela Andin (Affiliation: OTP Core Contributor)
-     - `@maennchen` – Jonatan Männchen (Affiliation: CISO Erlang Ecosystem
-       Foundation)
-     - `@voltone` – Bram Verburg (Affiliation: Erlang Ecosystem Foundation
-       Security WG Chair)
-
-3. **Assigning a CVE ID**  
-   - Once the Erlang Ecosystem Foundation CNA has reviewed the report and
-     decided to issue a CVE ID, edit the advisory:
-     - Set **CVE Identifier** to **"I have an existing CVE ID"**
-     - Enter the CVE number we provide you into the **Existing CVE** field
-
-This approach provides a secure and streamlined workflow for submitting and
-triaging vulnerabilities within the GitHub ecosystem.
+<div class="steps-container">
+  <div class="step-card">
+    <div class="step-number">1</div>
+    <div class="step-content">
+      <strong>CVE Identifier</strong>
+      <p>When creating the advisory, choose <em>"Request CVE ID later"</em></p>
+    </div>
+  </div>
+  <div class="step-card">
+    <div class="step-number">2</div>
+    <div class="step-content">
+      <strong>Add Collaborators</strong>
+      <p>Invite these GitHub users to your private advisory:</p>
+      <ul class="collaborator-list">
+        <li><code>@IngelaAndin</code> <span>Ingela Andin – OTP Core Contributor</span></li>
+        <li><code>@maennchen</code> <span>Jonatan Männchen – CISO, EEF</span></li>
+        <li><code>@voltone</code> <span>Bram Verburg – Security WG Chair</span></li>
+      </ul>
+    </div>
+  </div>
+  <div class="step-card">
+    <div class="step-number">3</div>
+    <div class="step-content">
+      <strong>Assign CVE ID</strong>
+      <p>Once we provide a CVE ID, edit the advisory and set <em>"I have an existing CVE ID"</em></p>
+    </div>
+  </div>
+</div>
 
 ## Questions & Suggestions
 
-For general questions, please use
-[GitHub Discussions](https://github.com/orgs/erlef-cna/discussions).
+<div class="contact-grid">
+  <a href="https://github.com/orgs/erlef-cna/discussions" class="contact-card">
+    <i class="fab fa-github"></i>
+    <strong>GitHub Discussions</strong>
+    <span>For general questions</span>
+  </a>
+</div>
 
-⚠️ **Note: GitHub Discussions are public. Never report or include vulnerability
-details.** ⚠️
+<div class="warning-box">
+  <i class="fas fa-exclamation-triangle"></i>
+  <span>GitHub Discussions are public. Never report or include vulnerability details.</span>
+</div>

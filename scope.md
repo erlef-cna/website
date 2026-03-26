@@ -4,6 +4,13 @@ title: Scope Definition
 breadcrumbs: true
 ---
 
+<p class="lead">
+  A CVE Numbering Authority (CNA) can only assign CVE identifiers for products
+  within its scope. This page defines which projects our CNA covers.
+</p>
+
+{% include ecosystem-logos.html %}
+
 <!-- !! Remember to also update the index page on change !! -->
 
 Our CNA assigns CVE IDs for:

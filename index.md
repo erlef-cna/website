@@ -3,48 +3,65 @@ title: Erlang Ecosystem Foundation CNA
 layout: page
 ---
 
-The Erlang Ecosystem Foundation CNA is a collaborative
-effort to assign and maintain [CVE](https://www.cve.org/) identifiers within the
-ecosystem, providing a consistent and transparent process for reporting,
-documenting, and mitigating security vulnerabilities.
-
-As a [CNA (CVE Numbering Authority)](https://www.cve.org/programorganization/cnas),
-this initiative encompasses [Erlang](https://www.erlang.org/), [Erlang Ecosystem Foundation](https://erlef.org/),
-[Elixir](https://elixir-lang.org/), [Gleam](https://gleam.run/), [Hex.pm](https://hex.pm),
-[Nerves](https://nerves-project.org/), [OpenRiak](https://openriak.org/),
-and [Hex.pm packages](https://hex.pm/packages) hosted by the
-[Erlang Ecosystem Foundation’s Security Working Group](https://erlef.org/wg/security).
-
-<p class="members mt-5 mb-5">
-  <a href="https://www.erlang.org/">
-    <img src="/assets/img/erlang-logo.svg" alt="Erlang" />
-  </a>
-  <a href="https://erlef.org/">
-    <img src="/assets/img/eef-logo.svg" alt="Erlang Ecosystem Foundation" />
-  </a>
-  <a href="https://elixir-lang.org/">
-    <img src="/assets/img/elixir-logo.png" alt="Elixir" />
-  </a>
-  <a href="https://gleam.run/">
-    <img src="/assets/img/gleam-logo.svg" alt="Gleam" />
-  </a>
-  <a href="https://hex.pm/">
-    <img src="/assets/img/hex-logo.png" alt="Hex.pm" />
-  </a>
-  <a href="https://nerves-project.org/">
-    <img src="/assets/img/nerves-logo.svg" alt="Nerves" />
-  </a>
-  <a href="https://openriak.org/">
-    <img src="/assets/img/openriak-logo.png" alt="OpenRiak" />
-  </a>
+<p class="lead">
+  The Erlang Ecosystem Foundation CNA is a collaborative effort to assign and
+  maintain CVE identifiers within the ecosystem, providing a consistent and
+  transparent process for reporting, documenting, and mitigating security
+  vulnerabilities.
 </p>
 
-By following the globally recognized CVE standard, this joint venture ensures a
-unified approach to identifying and addressing security issues across these
-communities.
+{% include ecosystem-logos.html %}
 
-* [Security Policy](./security-policy)
-* [CVE Assignment Criteria](./cve-criteria)
-* [CNA Scope](./scope)
-* [Contact](./contact)
-* [Issued CVE's](./cves/)
+As a [CNA (CVE Numbering Authority)](https://www.cve.org/programorganization/cnas),
+we assign CVE IDs for vulnerabilities in active packages hosted on
+[Hex.pm](https://hex.pm/) and in projects under the GitHub organizations listed
+in our [scope](./scope). All CVEs are also published to [OSV.dev](https://osv.dev/).
+This CNA is hosted by the
+[Erlang Ecosystem Foundation's Security Working Group](https://erlef.org/wg/security).
+
+## Latest CVEs
+
+<div class="row cve-list">
+  {% assign sorted_cves = site.data.cves | sort_cves_by_date %}
+  {% for cve in sorted_cves limit:3 %}
+    <div class="col-12 col-lg-4 mb-3 mb-lg-0">
+      <a href="{{ site.baseurl }}/cves/{{ cve[0] }}.html" class="cve-item">
+        <div class="cve-header">
+          <span class="cve-id">{{ cve[0] }}</span>
+          <span class="cve-date">{{ cve[1].cveMetadata.datePublished | date: "%b %d, %Y" }}</span>
+        </div>
+        <div class="cve-title">{{ cve[1].containers.cna.title }}</div>
+        <div class="cve-package">{{ cve[1].containers.cna.affected[0].packageURL | split: "?" | first }}</div>
+      </a>
+    </div>
+  {% endfor %}
+</div>
+
+<p class="mt-3">
+  <a href="./cves/" class="btn btn-outline-primary">View All CVEs</a>
+</p>
+
+## Resources
+
+<div class="resource-grid">
+  <a href="./scope" class="resource-card">
+    <i class="fas fa-crosshairs"></i>
+    <strong>CNA Scope</strong>
+    <span>What projects we cover</span>
+  </a>
+  <a href="./contact" class="resource-card">
+    <i class="fas fa-envelope"></i>
+    <strong>Contact</strong>
+    <span>Report a vulnerability</span>
+  </a>
+  <a href="./cve-criteria" class="resource-card">
+    <i class="fas fa-clipboard-check"></i>
+    <strong>CVE Criteria</strong>
+    <span>Assignment guidelines</span>
+  </a>
+  <a href="./security-policy" class="resource-card">
+    <i class="fas fa-book"></i>
+    <strong>Security Policy</strong>
+    <span>Disclosure process</span>
+  </a>
+</div>
