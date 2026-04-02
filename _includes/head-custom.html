@@ -298,3 +298,12 @@ blockquote {
   font-size: 0.95rem;
 }
 </style>
+
+{%- comment -%} Schema.org structured data for SEO {%- endcomment -%}
+{%- if page.cveMetadata -%}
+  {%- include cve-schema.html -%}
+{%- elsif page.url == '/cves/' or page.url == '/cves/index.html' -%}
+  {%- include cve-list-schema.html -%}
+{%- elsif page.url == '/contact.html' or page.url == '/contact/' -%}
+  {%- include contact-schema.html -%}
+{%- endif -%}
