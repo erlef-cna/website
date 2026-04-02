@@ -2,7 +2,7 @@
   Renders a package/product reference with appropriate linking.
 
   Parameters:
-    - include.entry: The affected entry object (with packageURL, collectionURL, packageName, vendor, product)
+    - include.entry: The affected entry object (with packageURL, vendor, product)
     - include.link: Optional, if true wraps in a link to the package (default: false)
 {%- endcomment -%}
 {%- assign pkg_url = nil -%}
@@ -18,21 +18,8 @@
     {%- assign pkg_url = "https://github.com/" | append: github_path -%}
   {%- endif -%}
 {%- else -%}
-  {%- comment %} TODO: Remove this fallback once CVE 5.1 records have been migrated to 5.2 {% endcomment -%}
-  {%- case include.entry.collectionURL -%}
-    {%- when "https://repo.hex.pm" -%}
-      {%- assign pkg_label = "pkg:hex/" | append: include.entry.packageName -%}
-      {%- assign pkg_url = "https://hex.pm/packages/" | append: include.entry.packageName -%}
-    {%- when "https://github.com" -%}
-      {%- assign pkg_label = "pkg:github/" | append: include.entry.packageName -%}
-      {%- assign pkg_url = "https://github.com/" | append: include.entry.packageName -%}
-    {%- else -%}
-      {%- if include.entry.packageName and include.entry.packageName != include.entry.product -%}
-        {%- capture pkg_label %}{{ include.entry.vendor }} / {{ include.entry.product }} (<code>{{ include.entry.packageName }}</code>){%- endcapture -%}
-      {%- else -%}
-        {%- capture pkg_label %}{{ include.entry.vendor }} / {{ include.entry.product }}{%- endcapture -%}
-      {%- endif -%}
-  {%- endcase -%}
+  {%- comment %} Fallback for affected entries without packageURL (e.g., services like hex.pm) {% endcomment -%}
+  {%- capture pkg_label %}{{ include.entry.vendor }} / {{ include.entry.product }}{%- endcapture -%}
 {%- endif -%}
 {%- if include.link and pkg_url -%}
   <a href="{{ pkg_url }}" target="_blank"><code>{{ pkg_label }}</code></a>
