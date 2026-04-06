@@ -260,14 +260,13 @@ layout: default
           {% endif %}
 
           {% comment %} ================= VERSIONS TABLE ================= {% endcomment %}
-          {%- assign filtered_versions = entry.versions | where_exp: "v", "v.versionType != 'purl'" -%}
           {% assign has_changes = false %}
-          {% for v in filtered_versions %}
+          {% for v in entry.versions %}
             {% if v.changes and v.changes.size > 0 %}{% assign has_changes = true %}{% endif %}
             {% if v.lessThan %}{% assign has_changes = true %}{% endif %}
           {% endfor %}
 
-          {% if filtered_versions.size > 0 %}
+          {% if entry.versions.size > 0 %}
           <div class="table-responsive">
             <table class="table table-striped table-borderless table-sm mb-3">
               <thead class="thead-light">
@@ -279,7 +278,7 @@ layout: default
                 </tr>
               </thead>
               <tbody>
-                {% for version in filtered_versions %}
+                {% for version in entry.versions %}
                   <tr>
                     <td class="font-weight-bold text-capitalize">{{ version.status }}</td>
                     <td>
