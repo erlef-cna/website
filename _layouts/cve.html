@@ -341,9 +341,11 @@ layout: default
       {%- assign references = page.containers.cna.references -%}
       {% if references %}
         <h2>References</h2>
+        {%- assign current_url = page.url | absolute_url -%}
         <ul class="pl-3">
           {% for ref in references %}
             {% if ref.tags contains "x_version-scheme" %}{% continue %}{% endif %}
+            {% if ref.url == current_url %}{% continue %}{% endif %}
             <li class="mb-1">
               <a href="{{ ref.url }}">{{ ref.name | default: ref.url }}</a>
               {% if ref.tags %}
