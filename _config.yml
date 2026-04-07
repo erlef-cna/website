@@ -1,5 +1,6 @@
 title: Erlang Ecosystem Foundation CNA
 description: This project handles the CVE Numbering Authority (CNA) for the Erlang Ecosystem Foundation (EEF).
+url: https://cna.erlef.org
 
 plugins:
 - jekyll-remote-theme
