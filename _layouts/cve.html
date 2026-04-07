@@ -325,6 +325,17 @@ layout: default
       {% endif %}
 
       <!-- ===============================
+           CONFIGURATIONS
+      ================================ -->
+      {%- assign configurations = page.containers.cna.configurations | where: "lang", "en" -%}
+      {% if configurations and configurations.size > 0 %}
+        <h2>Configurations</h2>
+        {%- assign config = configurations[0] -%}
+        {%- assign config_html = config.supportingMedia | where: "type", "text/html" | first -%}
+        {{ config_html.value | default: config.value | markdownify }}
+      {% endif %}
+
+      <!-- ===============================
            WORKAROUNDS
       ================================ -->
       {%- assign workarounds = page.containers.cna.workarounds | where: "lang", "en" -%}
