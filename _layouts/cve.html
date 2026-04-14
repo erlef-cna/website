@@ -347,6 +347,17 @@ layout: default
       {% endif %}
 
       <!-- ===============================
+           SOLUTIONS
+      ================================ -->
+      {%- assign solutions = page.containers.cna.solutions | where: "lang", "en" -%}
+      {% if solutions and solutions.size > 0 %}
+        <h2>Solutions</h2>
+        {%- assign sol = solutions[0] -%}
+        {%- assign sol_html = sol.supportingMedia | where: "type", "text/html" | first -%}
+        {{ sol_html.value | default: sol.value | markdownify }}
+      {% endif %}
+
+      <!-- ===============================
            REFERENCES
       ================================ -->
       {%- assign references = page.containers.cna.references -%}
