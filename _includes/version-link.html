@@ -16,6 +16,9 @@
 {%- elsif include.version_type == "semver" and include.entry.packageURL contains "pkg:hex/" -%}
   {%- assign hex_name = include.entry.packageURL | split: "?" | first | remove: "pkg:hex/" -%}
   <a href="https://hex.pm/packages/{{ hex_name }}/{{ include.version }}" target="_blank"><code>{{ include.version }}</code></a>
+{%- elsif include.entry.packageURL contains "pkg:oci/" and include.entry.packageURL contains "ghcr.io" -%}
+  {%- assign oci_image = include.entry.packageURL | split: "?" | first | remove: "pkg:oci/" -%}
+  <a href="https://github.com/{{ include.entry.packageName }}/pkgs/container/{{ oci_image }}" target="_blank"><code>{{ include.version }}</code></a>
 {%- else -%}
   <code>{{ include.version }}</code>
 {%- endif -%}

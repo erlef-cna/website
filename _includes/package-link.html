@@ -16,6 +16,8 @@
   {%- elsif purl contains "pkg:github/" -%}
     {%- assign github_path = purl | remove: "pkg:github/" -%}
     {%- assign pkg_url = "https://github.com/" | append: github_path -%}
+  {%- elsif purl contains "pkg:oci/" and include.entry.packageURL contains "ghcr.io" -%}
+    {%- assign pkg_url = "https://github.com/" | append: include.entry.packageName -%}
   {%- endif -%}
 {%- else -%}
   {%- comment %} Fallback for affected entries without packageURL (e.g., services like hex.pm) {% endcomment -%}
