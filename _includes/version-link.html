@@ -10,7 +10,7 @@
   <code>initial</code>
 {%- elsif include.version_type == "git" and include.entry.repo contains "github.com" -%}
   {%- assign repo_url = include.entry.repo | remove: ".git" -%}
-  <a href="{{ repo_url }}/tree/{{ include.version }}" target="_blank"><code>{{ include.version | truncate: 12, "" }}</code></a>
+  <a href="{{ repo_url }}/tree/{{ include.version }}" target="_blank"><code>{{ include.version | truncate: 10, "" }}</code></a>
 {%- elsif include.version_type == "otp" and include.entry.packageName == "erlang/otp" -%}
   <a href="https://www.erlang.org/patches/otp-{{ include.version }}" target="_blank"><code>{{ include.version }}</code></a>
 {%- elsif include.version_type == "semver" and include.entry.packageURL contains "pkg:hex/" -%}

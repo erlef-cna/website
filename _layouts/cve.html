@@ -143,7 +143,7 @@ layout: default
       {%- assign description = page.containers.cna.descriptions | where: "lang", "en" | first -%}
       {%- assign descriptionText = description.value | markdownify -%}
       {%- assign descriptionHtml = description.supportingMedia | where: "type", "text/html" | first -%}
-      {{ descriptionHtml.value | default: descriptionText }}
+      {{ descriptionHtml.value | default: descriptionText | link_commit_shas: page.containers.cna.references }}
 
       <!-- ===============================
            AFFECTED / FIXED VERSIONS
@@ -332,7 +332,7 @@ layout: default
         <h2>Configurations</h2>
         {%- assign config = configurations[0] -%}
         {%- assign config_html = config.supportingMedia | where: "type", "text/html" | first -%}
-        {{ config_html.value | default: config.value | markdownify }}
+        {{ config_html.value | default: config.value | markdownify | link_commit_shas: page.containers.cna.references }}
       {% endif %}
 
       <!-- ===============================
@@ -343,7 +343,7 @@ layout: default
         <h2>Workarounds</h2>
         {%- assign wa = workarounds[0] -%}
         {%- assign wa_html = wa.supportingMedia | where: "type", "text/html" | first -%}
-        {{ wa_html.value | default: wa.value | markdownify }}
+        {{ wa_html.value | default: wa.value | markdownify | link_commit_shas: page.containers.cna.references }}
       {% endif %}
 
       <!-- ===============================
@@ -354,7 +354,7 @@ layout: default
         <h2>Solutions</h2>
         {%- assign sol = solutions[0] -%}
         {%- assign sol_html = sol.supportingMedia | where: "type", "text/html" | first -%}
-        {{ sol_html.value | default: sol.value | markdownify }}
+        {{ sol_html.value | default: sol.value | markdownify | link_commit_shas: page.containers.cna.references }}
       {% endif %}
 
       <!-- ===============================
