@@ -64,4 +64,9 @@ This CNA is hosted by the
     <strong>Security Policy</strong>
     <span>Disclosure process</span>
   </a>
+  <a href="./pre-disclosure-list" class="resource-card">
+    <i class="fas fa-users"></i>
+    <strong>Pre-Disclosure List</strong>
+    <span>Early vulnerability access</span>
+  </a>
 </div>
