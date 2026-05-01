@@ -276,6 +276,38 @@ blockquote {
   font-size: 0.9rem;
 }
 
+/* CVE Activity Chart */
+.cve-chart-wrapper {
+  margin-top: 1.5rem;
+  margin-bottom: 0.5rem;
+  padding: 1.25rem 1rem 0.75rem;
+  background: #f8f9fa;
+  border: 1px solid #dee2e6;
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.chart-axis-text {
+  fill: #6c757d;
+}
+
+.chart-axis-year {
+  fill: #adb5bd;
+}
+
+.chart-axis-extrap {
+  opacity: 0.55;
+}
+
+.chart-dot {
+  cursor: default;
+  transition: r 0.15s ease;
+}
+
+.chart-dot:hover {
+  r: 7;
+}
+
 /* Warning Box */
 .warning-box {
   display: flex;

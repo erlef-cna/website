@@ -19,6 +19,13 @@ in our [scope](./scope). All CVEs are also published to [OSV.dev](https://osv.de
 This CNA is hosted by the
 [Erlang Ecosystem Foundation's Security Working Group](https://erlef.org/wg/security).
 
+## CVE Activity
+
+<div class="cve-chart-wrapper">
+  {%- include cve-chart.svg -%}
+</div>
+<p class="text-muted" style="font-size:0.875rem;margin-top:0.5rem;">CVEs published by quarter since the CNA was established.</p>
+
 ## Latest CVEs
 
 <div class="row cve-list">
