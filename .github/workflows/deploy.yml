@@ -3,6 +3,9 @@ name: Deploy Jekyll site to Pages
 on:
   push:
     branches: ["main"]
+  schedule:
+    # Daily rebuild to keep chart extrapolations current
+    - cron: "0 2 * * *"  # 02:00 UTC
   workflow_dispatch: {}
 
 permissions:
