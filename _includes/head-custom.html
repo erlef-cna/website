@@ -304,8 +304,20 @@ blockquote {
   transition: r 0.15s ease;
 }
 
-.chart-dot:hover {
+.chart-dot-group:hover .chart-dot,
+.chart-dot-group:focus .chart-dot {
   r: 7;
+}
+
+.chart-popover {
+  display: none;
+  pointer-events: none;
+  filter: drop-shadow(0 2px 4px rgba(0,0,0,0.12));
+}
+
+.chart-dot-group:hover .chart-popover,
+.chart-dot-group:focus .chart-popover {
+  display: block;
 }
 
 /* Warning Box */

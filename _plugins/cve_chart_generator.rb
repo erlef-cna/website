@@ -166,6 +166,50 @@ module Jekyll
       tag(:text, { x: x, y: y }.merge(defaults).merge(attrs), content)
     end
 
+    # ------------------------------------------------------------------ popover
+
+    POPOVER_PAD_X = 8
+    POPOVER_PAD_Y = 5
+    POPOVER_FONT_SIZE = 11
+    POPOVER_LINE_HEIGHT = 14
+    POPOVER_OFFSET_Y = -14  # above the dot
+
+    # Approximate character width for the popover font size
+    def approx_text_width(str)
+      str.length * POPOVER_FONT_SIZE * 0.56
+    end
+
+    def dot_with_popover(cx, cy, tip, fill:, stroke:, extra: {})
+      lines = tip.split("\n")
+      box_w = (lines.map { |l| approx_text_width(l) }.max + POPOVER_PAD_X * 2).round
+      box_h = (lines.size * POPOVER_LINE_HEIGHT + POPOVER_PAD_Y * 2).round
+      # Keep popover inside the SVG horizontally
+      pop_x = (cx - box_w / 2).clamp(LEFT, RIGHT - box_w)
+      # Show above by default; flip below if it would leave the top of the viewbox
+      pop_y_above = cy + POPOVER_OFFSET_Y - box_h
+      pop_y = pop_y_above >= TOP ? pop_y_above : cy + 10
+
+      text_els = lines.each_with_index.map do |line, idx|
+        text_y = pop_y + POPOVER_PAD_Y + POPOVER_LINE_HEIGHT * (idx + 1) - 2
+        tag(:text, { x: pop_x + box_w / 2, y: text_y,
+                     "text-anchor": "middle", "font-size": POPOVER_FONT_SIZE,
+                     "font-family": FONT, fill: "#212529" }, line)
+      end.join
+
+      popover = <<~SVG.strip
+        <g class="chart-popover" aria-hidden="true">
+          <rect x="#{pop_x}" y="#{pop_y}" width="#{box_w}" height="#{box_h}" rx="4" ry="4" fill="#fff" stroke="#dee2e6" stroke-width="1"/>
+          #{text_els}
+        </g>
+      SVG
+
+      dot_attrs = { cx: cx, cy: cy, r: 5, fill: fill, stroke: stroke,
+                    "stroke-width": 2, class: "chart-dot" }.merge(extra)
+      circle = tag(:circle, dot_attrs)
+
+      "<g class=\"chart-dot-group\" tabindex=\"0\">#{circle}#{popover}</g>"
+    end
+
     # ------------------------------------------------------------------ build
 
     def build_svg(cves)
@@ -281,27 +325,21 @@ module Jekyll
 
         case pt[:kind]
         when :confirmed
-          lines << tag(:circle, { cx: cx, cy: cy, r: 5, fill: COLOR,
-                        stroke: "#fff", "stroke-width": 2, class: "chart-dot" },
-                        tag(:title, {}, "#{pt[:label]}: #{pt[:count]} CVE#{pt[:count] == 1 ? '' : 's'}"))
+          tip = "#{pt[:label]}: #{pt[:count]} CVE#{pt[:count] == 1 ? '' : 's'}"
+          lines << dot_with_popover(cx, cy, tip, fill: COLOR, stroke: "#fff")
 
         when :current
           proj_y = y_for(pt[:projected], y_max)
-          # Real dot (solid)
-          lines << tag(:circle, { cx: cx, cy: cy, r: 5, fill: COLOR,
-                        stroke: "#fff", "stroke-width": 2, class: "chart-dot" },
-                        tag(:title, {}, "#{pt[:label]}: #{pt[:count]} CVEs published (#{(pt[:progress] * 100).round}% of quarter elapsed)"))
-          # Projected dot (hollow)
-          lines << tag(:circle, { cx: cx, cy: proj_y, r: 5, fill: "#fff",
-                        stroke: COLOR, "stroke-width": 2, "stroke-dasharray": "3 2",
-                        opacity: 0.75, class: "chart-dot" },
-                        tag(:title, {}, "#{pt[:label]} projected: ~#{pt[:projected]} CVEs"))
+          tip_real = "#{pt[:label]}: #{pt[:count]} CVEs (#{(pt[:progress] * 100).round}% of quarter elapsed)"
+          tip_proj = "#{pt[:label]} projected: ~#{pt[:projected]} CVEs"
+          lines << dot_with_popover(cx, cy, tip_real, fill: COLOR, stroke: "#fff")
+          lines << dot_with_popover(cx, proj_y, tip_proj, fill: "#fff", stroke: COLOR,
+                                    extra: { "stroke-dasharray": "3 2", opacity: 0.75 })
 
         when :next
-          lines << tag(:circle, { cx: cx, cy: cy, r: 5, fill: "#fff",
-                        stroke: COLOR, "stroke-width": 2, "stroke-dasharray": "3 2",
-                        opacity: 0.75, class: "chart-dot" },
-                        tag(:title, {}, "#{pt[:label]} forecast: ~#{pt[:count]} CVEs (linear trend)"))
+          tip = "#{pt[:label]} forecast: ~#{pt[:count]} CVEs (linear trend)"
+          lines << dot_with_popover(cx, cy, tip, fill: "#fff", stroke: COLOR,
+                                    extra: { "stroke-dasharray": "3 2", opacity: 0.75 })
         end
 
         extrap = pt[:kind] == :next
