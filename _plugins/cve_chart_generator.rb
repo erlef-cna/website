@@ -315,8 +315,35 @@ module Jekyll
       end
 
 
+      # ── legend ────────────────────────────────────────────────────────
+      legend_y = BOTTOM + 52
+      legend_items = [
+        { dash: false, label: "Actual CVEs" },
+        { dash: true,  label: "Projected / Forecast" },
+      ]
+      legend_total_width = legend_items.sum { |item| item[:label].length * 6.5 + 40 }
+      legend_x = (VIEW_W - legend_total_width) / 2
+      cursor_x = legend_x
+      legend_items.each do |item|
+        line_attrs = {
+          x1: cursor_x, y1: legend_y, x2: cursor_x + 24, y2: legend_y,
+          stroke: COLOR, "stroke-width": 2, "stroke-linecap": "round"
+        }
+        line_attrs[:"stroke-dasharray"] = "5 4" if item[:dash]
+        line_attrs[:opacity] = 0.6 if item[:dash]
+        lines << tag(:line, line_attrs)
+        dot_attrs = { cx: cursor_x + 12, cy: legend_y, r: 4,
+                      fill: item[:dash] ? "#fff" : COLOR,
+                      stroke: COLOR, "stroke-width": 2 }
+        dot_attrs[:"stroke-dasharray"] = "3 2" if item[:dash]
+        lines << tag(:circle, dot_attrs)
+        lines << text_el(cursor_x + 30, legend_y + 4, item[:label],
+                         "font-size": 11, fill: AXIS_COLOR)
+        cursor_x += item[:label].length * 6.5 + 40
+      end
+
       svg_attrs = [
-        'viewBox="0 0 700 260"',
+        'viewBox="0 0 700 280"',
         'xmlns="http://www.w3.org/2000/svg"',
         'role="img"',
         'aria-label="CVE publications by quarter"',
