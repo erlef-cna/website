@@ -54,3 +54,5 @@ breadcrumbs: true
 CVE's can also be requested as a JSON: [`GET {{ "cves/index.json" | relative_url }}`]({{ "cves/index.json" | relative_url }})
 
 OSV records can also be requested as a JSON: [`GET {{ "osv/all.json" | relative_url }}`]({{ "osv/all.json" | relative_url }})
+
+Subscribe via feed: [Atom]({{ "feed.atom" | relative_url }}) &middot; [RSS]({{ "feed.rss" | relative_url }})

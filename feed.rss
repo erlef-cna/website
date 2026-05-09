@@ -1,0 +1,27 @@
+---
+layout: none
+---
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>{{ site.title | xml_escape }} CVEs</title>
+    <description>{{ site.description | xml_escape }}</description>
+    <link>{{ site.url }}/cves/</link>
+    <atom:link href="{{ site.url }}/feed.rss" rel="self" type="application/rss+xml"/>
+    {%- assign sorted_cves = site.data.cves | sort_cves_by_date -%}
+    {%- assign latest = sorted_cves | first -%}
+    <lastBuildDate>{{ latest[1].cveMetadata.datePublished | date_to_rfc822 }}</lastBuildDate>
+    {% for cve in sorted_cves %}
+      {%- assign meta = cve[1].cveMetadata -%}
+      {%- assign cna = cve[1].containers.cna -%}
+      {%- assign description = cna.descriptions | where: "lang", "en" | first -%}
+      <item>
+        <title>{{ meta.cveId }}: {{ cna.title | default: meta.cveId | xml_escape }}</title>
+        <link>{{ site.url }}/cves/{{ meta.cveId }}.html</link>
+        <guid isPermaLink="true">{{ site.url }}/cves/{{ meta.cveId }}.html</guid>
+        <pubDate>{{ meta.datePublished | date_to_rfc822 }}</pubDate>
+        <description>{{ description.value | xml_escape }}</description>
+      </item>
+    {% endfor %}
+  </channel>
+</rss>

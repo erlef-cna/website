@@ -1,0 +1,31 @@
+---
+layout: none
+---
+<?xml version="1.0" encoding="UTF-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+  <title>{{ site.title | xml_escape }} CVEs</title>
+  <subtitle>{{ site.description | xml_escape }}</subtitle>
+  <link href="{{ site.url }}/feed.atom" rel="self" type="application/atom+xml"/>
+  <link href="{{ site.url }}/cves/" rel="alternate" type="text/html"/>
+  <id>{{ site.url }}/feed.atom</id>
+  {%- assign sorted_cves = site.data.cves | sort_cves_by_date -%}
+  {%- assign latest = sorted_cves | first -%}
+  <updated>{{ latest[1].cveMetadata.datePublished | date_to_xmlschema }}</updated>
+  <author>
+    <name>{{ site.title | xml_escape }}</name>
+    <uri>{{ site.url }}</uri>
+  </author>
+  {% for cve in sorted_cves %}
+    {%- assign meta = cve[1].cveMetadata -%}
+    {%- assign cna = cve[1].containers.cna -%}
+    {%- assign description = cna.descriptions | where: "lang", "en" | first -%}
+    <entry>
+      <id>{{ site.url }}/cves/{{ meta.cveId }}.html</id>
+      <title>{{ meta.cveId }}: {{ cna.title | default: meta.cveId | xml_escape }}</title>
+      <link href="{{ site.url }}/cves/{{ meta.cveId }}.html" rel="alternate" type="text/html"/>
+      <published>{{ meta.datePublished | date_to_xmlschema }}</published>
+      <updated>{{ meta.dateUpdated | default: meta.datePublished | date_to_xmlschema }}</updated>
+      <summary>{{ description.value | xml_escape }}</summary>
+    </entry>
+  {% endfor %}
+</feed>
