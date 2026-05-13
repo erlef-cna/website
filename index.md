@@ -71,4 +71,9 @@ This CNA is hosted by the
     <strong>Security Policy</strong>
     <span>Disclosure process</span>
   </a>
+  <a href="./data-licensing" class="resource-card">
+    <i class="fas fa-balance-scale"></i>
+    <strong>Data Licensing</strong>
+    <span>License information</span>
+  </a>
 </div>
