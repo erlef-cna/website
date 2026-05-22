@@ -97,35 +97,50 @@ module Jekyll
       next_yr  = cur_q == 4 ? cur_year + 1 : cur_year
 
       all_values = counts.values + [projected_count, next_count]
-      y_max      = [((all_values.max / 5.0).ceil * 5), 5].max
+      y_max, tick_step = nice_y_max(all_values.max)
 
       # Prepend a zero-count quarter before the first real data point
       first_key   = sorted_keys.first
       first_yr, first_q = first_key.split("-Q").map(&:to_i)
       prev_q   = first_q == 1 ? 4       : first_q - 1
       prev_yr  = first_q == 1 ? first_yr - 1 : first_yr
-      points = [{ kind: :confirmed, label: "Q#{prev_q} #{prev_yr}", count: 0, y_max: y_max }]
+      points = [{ kind: :confirmed, label: "Q#{prev_q} #{prev_yr}", count: 0, y_max: y_max, tick_step: tick_step }]
 
       points += sorted_keys.map do |key|
         yr, q = key.split("-Q")
         label = "Q#{q} #{yr}"
         if key == cur_key
           { kind: :current, label: label, count: raw_count,
-            projected: projected_count, progress: progress, y_max: y_max }
+            projected: projected_count, progress: progress, y_max: y_max, tick_step: tick_step }
         else
-          { kind: :confirmed, label: label, count: counts[key], y_max: y_max }
+          { kind: :confirmed, label: label, count: counts[key], y_max: y_max, tick_step: tick_step }
         end
       end
 
       if completed_keys.any?
         points << { kind: :next, label: "Q#{next_q} #{next_yr}",
-                    count: next_count, y_max: y_max }
+                    count: next_count, y_max: y_max, tick_step: tick_step }
       end
 
       points
     end
 
     # ------------------------------------------------------------------ geometry
+
+    # Return [y_max, tick_step] with round grid labels.
+    # Picks the smallest nice step where ceil(raw_max/step)*step fits within
+    # 3–6 ticks. Nice steps follow the 1-2-5 sequence × powers of 10.
+    def nice_y_max(raw_max)
+      raw_max = [raw_max, 1].max
+      magnitude = [10 ** (Math.log10(raw_max).floor - 1), 1].max
+      steps = [1, 2, 5, 10, 20, 25, 50, 100].map { |s| s * magnitude }
+      steps.each do |step|
+        snapped = (raw_max.to_f / step).ceil * step
+        ticks   = snapped / step
+        return [snapped, step] if ticks.between?(3, 6)
+      end
+      [raw_max, raw_max]
+    end
 
     def x_for(index, total)
       return LEFT + WIDTH / 2 if total == 1
@@ -215,8 +230,8 @@ module Jekyll
     def build_svg(cves)
       pts    = build_points(cves)
       n      = pts.size
-      y_max  = pts.first&.dig(:y_max) || 5
-      tick_step = y_max / 5
+      y_max     = pts.first&.dig(:y_max)     || 5
+      tick_step = pts.first&.dig(:tick_step) || 5
 
       # Compute pixel coords for every point
       coords = pts.each_with_index.map do |pt, i|
@@ -280,8 +295,7 @@ module Jekyll
       SVG
 
       # ── grid ──────────────────────────────────────────────────────────
-      (0..5).each do |n|
-        val = n * tick_step
+      (0..y_max).step(tick_step).each do |val|
         ty  = y_for(val, y_max)
         lines << tag(:line, x1: LEFT, y1: ty, x2: RIGHT, y2: ty,
                      stroke: GRID_COLOR, "stroke-width": 1)
