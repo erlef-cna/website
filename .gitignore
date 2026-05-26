@@ -1,3 +1,5 @@
 _site/
 .sass-cache/
 _includes/cve-chart.svg
+_includes/cwe-chart.svg
+_includes/cwe-legend.html

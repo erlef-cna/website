@@ -76,4 +76,9 @@ This CNA is hosted by the
     <strong>Data Licensing</strong>
     <span>License information</span>
   </a>
+  <a href="./common-weaknesses" class="resource-card">
+    <i class="fas fa-bug"></i>
+    <strong>Common Weaknesses</strong>
+    <span>CWE distribution</span>
+  </a>
 </div>

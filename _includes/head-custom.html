@@ -320,6 +320,125 @@ blockquote {
   display: block;
 }
 
+/* CWE Doughnut Chart */
+.cwe-chart-wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+  margin-top: 1.5rem;
+  margin-bottom: 0.5rem;
+  padding: 1.25rem 1rem 1rem;
+  background: #f8f9fa;
+  border: 1px solid #dee2e6;
+  border-radius: 8px;
+}
+
+@media (min-width: 640px) {
+  .cwe-chart-wrapper {
+    flex-direction: row;
+    align-items: center;
+  }
+
+  .cwe-donut {
+    flex: 0 0 auto;
+    width: 360px;
+  }
+
+  .cwe-legend {
+    flex: 1 1 0;
+    min-width: 0;
+  }
+}
+
+.cwe-slice-hit {
+  cursor: default;
+}
+
+.cwe-popover {
+  display: none;
+  pointer-events: none;
+}
+
+.cwe-slice-group:hover .cwe-popover,
+.cwe-slice-group:focus .cwe-popover {
+  display: block;
+}
+
+/* Legend table */
+.cwe-legend-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.875rem;
+}
+
+.cwe-legend-table tr {
+  border-bottom: 1px solid #e9ecef;
+}
+
+.cwe-legend-table tr:last-child {
+  border-bottom: none;
+}
+
+.cwe-legend-swatch-cell {
+  width: 20px;
+  padding: 0.35rem 0.5rem 0.35rem 0;
+  vertical-align: middle;
+}
+
+.cwe-legend-swatch {
+  display: inline-block;
+  width: 12px;
+  height: 12px;
+  border-radius: 3px;
+  vertical-align: middle;
+}
+
+.cwe-legend-id-cell {
+  padding: 0.35rem 0.75rem 0.35rem 0;
+  vertical-align: middle;
+  white-space: nowrap;
+}
+
+.cwe-legend-desc-cell {
+  padding: 0.35rem 0.5rem 0.35rem 0;
+  vertical-align: middle;
+  width: 100%;
+}
+
+.cwe-legend-link {
+  text-decoration: none;
+  color: inherit;
+}
+
+.cwe-legend-link:hover .cwe-legend-id,
+.cwe-legend-link:hover .cwe-legend-desc {
+  text-decoration: underline;
+}
+
+.cwe-legend-id {
+  font-weight: 600;
+  font-family: monospace;
+  white-space: nowrap;
+}
+
+.cwe-legend-desc {
+  color: #6c757d;
+}
+
+.cwe-legend-count-cell {
+  padding: 0.35rem 0 0.35rem 0.5rem;
+  text-align: right;
+  white-space: nowrap;
+  color: #495057;
+  font-weight: 500;
+  vertical-align: middle;
+}
+
+.cwe-legend-pct {
+  color: #6c757d;
+  font-weight: 400;
+}
+
 /* Warning Box */
 .warning-box {
   display: flex;
