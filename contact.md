@@ -42,6 +42,7 @@ breadcrumbs: true
       <li>
         <code>@{{ member.github }}</code>
         <span>{{ member.name }} – {{ member.affiliation }}</span>
+        {% if member.primary_poc %}<span class="poc-badge">Primary PoC</span>{% endif %}
       </li>
     {% endfor %}
   </ul>
