@@ -9,6 +9,11 @@ breadcrumbs: true
   vulnerabilities through the following contact methods.
 </p>
 
+<div class="warning-box" style="margin-bottom:1.5rem;">
+  <i class="fas fa-code-branch"></i>
+  <span>Are you a project maintainer coordinating a disclosure with us? See the <a href="/maintainer-process">Maintainer Process</a> page for step-by-step guidance.</span>
+</div>
+
 ## Report a Vulnerability
 
 <div class="contact-grid">
@@ -24,42 +29,22 @@ breadcrumbs: true
   </a>
 </div>
 
-<div class="gpg-fingerprint">
+<div class="gpg-fingerprint" style="margin-bottom:1.5rem;">
   <strong>Fingerprint:</strong> <code>38BD 201B 397E 28F1 F3D9 3EC7 6E03 1A81 1F26 6E21</code>
 </div>
 
-## GitHub Private Vulnerability Reporting
 
-We also support [GitHub Private Vulnerability Reporting](https://docs.github.com/en/code-security/security-advisories/guidance-on-reporting-and-writing-information-about-vulnerabilities/privately-reporting-a-security-vulnerability).
-You can invite our CNA Points of Contact directly into your private advisory.
+## Team
 
-<div class="steps-container">
-  <div class="step-card">
-    <div class="step-number">1</div>
-    <div class="step-content">
-      <strong>CVE Identifier</strong>
-      <p>When creating the advisory, choose <em>"Request CVE ID later"</em></p>
-    </div>
-  </div>
-  <div class="step-card">
-    <div class="step-number">2</div>
-    <div class="step-content">
-      <strong>Add Collaborators</strong>
-      <p>Invite these GitHub users to your private advisory:</p>
-      <ul class="collaborator-list">
-        <li><code>@IngelaAndin</code> <span>Ingela Andin – OTP Core Contributor</span></li>
-        <li><code>@maennchen</code> <span>Jonatan Männchen – CISO, EEF</span></li>
-        <li><code>@voltone</code> <span>Bram Verburg – Security WG Chair</span></li>
-      </ul>
-    </div>
-  </div>
-  <div class="step-card">
-    <div class="step-number">3</div>
-    <div class="step-content">
-      <strong>Assign CVE ID</strong>
-      <p>Once we provide a CVE ID, edit the advisory and set <em>"I have an existing CVE ID"</em></p>
-    </div>
-  </div>
+<div class="content-box" style="margin-bottom:1.5rem;">
+  <ul class="collaborator-list" style="margin:0;">
+    {% for member in site.data.team %}
+      <li>
+        <code>@{{ member.github }}</code>
+        <span>{{ member.name }} – {{ member.affiliation }}</span>
+      </li>
+    {% endfor %}
+  </ul>
 </div>
 
 ## Questions & Suggestions

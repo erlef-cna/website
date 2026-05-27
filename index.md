@@ -81,4 +81,9 @@ This CNA is hosted by the
     <strong>Common Weaknesses</strong>
     <span>CWE distribution</span>
   </a>
+  <a href="./maintainer-process" class="resource-card">
+    <i class="fas fa-code-branch"></i>
+    <strong>Maintainer Process</strong>
+    <span>How coordinated disclosure works</span>
+  </a>
 </div>
