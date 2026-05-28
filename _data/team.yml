@@ -1,11 +1,24 @@
 - name: Ingela Andin
   github: IngelaAndin
   affiliation: OTP Core Contributor
+  primary_poc: true
 
 - name: Jonatan Männchen
   github: maennchen
   affiliation: CISO, EEF
+  primary_poc: true
 
 - name: Bram Verburg
   github: voltone
   affiliation: Security WG Chair
+  primary_poc: true
+
+- name: Eric Meadows-Jönsson
+  github: ericmj
+  affiliation: Hex.pm Core Maintainer
+  primary_poc: false
+
+- name: Peter Ullrich
+  github: pjullrich
+  affiliation: Ecosystem Security Researcher
+  primary_poc: false

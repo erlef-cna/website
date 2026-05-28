@@ -52,9 +52,9 @@ place, and makes it easy to collaborate privately.
       <strong>Invite the CNA as Collaborators</strong>
       <p>Add our Points of Contact to the private advisory so we can assist with triage, assign the CVE ID, and coordinate publication.</p>
       <ul class="collaborator-list">
-        {% for member in site.data.team %}
+        {% for member in site.data.team %}{% if member.primary_poc %}
           <li><code>@{{ member.github }}</code> <span>{{ member.name }} – {{ member.affiliation }}</span></li>
-        {% endfor %}
+        {% endif %}{% endfor %}
       </ul>
     </div>
   </div>
