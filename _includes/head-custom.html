@@ -297,6 +297,26 @@ blockquote {
   white-space: nowrap;
 }
 
+/* Step Screenshots */
+.step-screenshot {
+  display: inline-block;
+  margin-top: 0.75rem;
+  cursor: zoom-in;
+}
+
+.step-screenshot img {
+  max-width: 220px;
+  max-height: 140px;
+  border-radius: 6px;
+  border: 1px solid #dee2e6;
+  transition: box-shadow 0.15s ease, opacity 0.15s ease;
+}
+
+.step-screenshot:hover img {
+  box-shadow: 0 4px 16px rgba(0,0,0,0.18);
+  opacity: 0.75;
+}
+
 /* CVE Activity Chart */
 .cve-chart-wrapper {
   margin-top: 1.5rem;

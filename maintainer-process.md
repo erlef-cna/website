@@ -41,9 +41,12 @@ place, and makes it easy to collaborate privately.
     <div class="step-content">
       <strong>Enable Private Vulnerability Reporting</strong>
       <p>
-        In your GitHub repository, go to <em>Settings &rarr; Security &amp; quality</em> and
-        enable <em>Private vulnerability reporting</em>.
+        In your GitHub repository, go to the <em>Security and Quality</em> page and click
+        <em>"Enable vulnerability reporting"</em>. This will navigate you to the repository
+        settings — click <em>"Enable"</em> in the <em>Private vulnerability reporting</em> section.
       </p>
+      {% include step-screenshot.html src="assets/img/maintainer-process/enable-private-reporting-1.png" alt="Security and Quality page with Enable vulnerability reporting button highlighted" %}
+      {% include step-screenshot.html src="assets/img/maintainer-process/enable-private-reporting-2.png" alt="Repository settings with Enable button in Private vulnerability reporting section" %}
     </div>
   </div>
   <div class="step-card">
@@ -56,6 +59,7 @@ place, and makes it easy to collaborate privately.
           <li><code>@{{ member.github }}</code> <span>{{ member.name }} – {{ member.affiliation }}</span></li>
         {% endif %}{% endfor %}
       </ul>
+      {% include step-screenshot.html src="assets/img/maintainer-process/collaborators.png" alt="GitHub advisory collaborators section" %}
     </div>
   </div>
   <div class="step-card">
@@ -66,6 +70,8 @@ place, and makes it easy to collaborate privately.
         When creating the advisory, choose <em>"Request CVE ID later"</em>. Once we
         provide the CVE ID, edit the advisory and select <em>"I have an existing CVE ID"</em>.
       </p>
+      {% include step-screenshot.html src="assets/img/maintainer-process/cve-later.png" alt="Advisory creation form with Request CVE ID later option selected" %}
+      {% include step-screenshot.html src="assets/img/maintainer-process/cve-input.png" alt="Advisory edit form with I have an existing CVE ID option and input field" %}
     </div>
   </div>
 </div>
@@ -96,6 +102,7 @@ Once initial contact is established, the typical workflow is as follows:
         Invite the original reporters to your private advisory. They can clarify details
         and verify that your patch addresses the issue.
       </p>
+      {% include step-screenshot.html src="assets/img/maintainer-process/collaborators.png" alt="GitHub advisory collaborators section" %}
     </div>
   </div>
   <div class="step-card">
@@ -107,6 +114,7 @@ Once initial contact is established, the typical workflow is as follows:
         <em>Edit</em> &rarr; <em>CVE identifier</em> &rarr; <em>I have an existing CVE ID</em>
         and enter the ID we give you. Do <b style="display:inline">not</b> request a CVE ID from GitHub.
       </p>
+      {% include step-screenshot.html src="assets/img/maintainer-process/cve-input.png" alt="Advisory edit form with I have an existing CVE ID option and input field" %}
     </div>
   </div>
   <div class="step-card">
@@ -119,6 +127,8 @@ Once initial contact is established, the typical workflow is as follows:
         repository. If you are coordinating via email, you can also send the patch as an
         attachment or inline diff instead.
       </p>
+      {% include step-screenshot.html src="assets/img/maintainer-process/temporary-fork-start.png" alt="Advisory page with Start a temporary private fork button" %}
+      {% include step-screenshot.html src="assets/img/maintainer-process/temporary-fork-repo-info.png" alt="Temporary private fork repository info" %}
     </div>
   </div>
   <div class="step-card">
@@ -130,6 +140,8 @@ Once initial contact is established, the typical workflow is as follows:
         security-related changes to main or any public branch. Include the GHSA ID and
         CVE ID in your commit message.
       </p>
+      {% include step-screenshot.html src="assets/img/maintainer-process/patch-console.png" alt="Terminal showing patch commit to private fork" %}
+      {% include step-screenshot.html src="assets/img/maintainer-process/temporary-fork-pr.png" alt="Pull request on temporary private fork" %}
     </div>
   </div>
   <div class="step-card">
@@ -151,7 +163,8 @@ Once initial contact is established, the typical workflow is as follows:
       <strong>Coordinate Release Date</strong>
       <p>
         Agree on a publication date with the CNA. We appreciate a heads-up so we can
-        be ready to publish the CVE promptly.
+        be ready to publish the CVE promptly. You can use the GHSA comments to
+        coordinate; comments remain private even after the advisory is published.
       </p>
     </div>
   </div>
@@ -163,6 +176,7 @@ Once initial contact is established, the typical workflow is as follows:
         Merge the private PR, and publish a new release to Hex.pm (or your relevant
         registry). Do this only on the agreed date.
       </p>
+      {% include step-screenshot.html src="assets/img/maintainer-process/temporary-fork-merge.png" alt="Merging the private fork pull request" %}
     </div>
   </div>
   <div class="step-card">
@@ -173,6 +187,7 @@ Once initial contact is established, the typical workflow is as follows:
         Publish the GitHub Security Advisory. This makes the vulnerability details
         publicly visible.
       </p>
+      {% include step-screenshot.html src="assets/img/maintainer-process/publish-advisory.png" alt="GitHub Security Advisory publish button" %}
     </div>
   </div>
   <div class="step-card">
@@ -182,7 +197,25 @@ Once initial contact is established, the typical workflow is as follows:
       <p>
         Once the advisory is published, we will publish the CVE to
         <a href="https://www.cve.org/">CVE.org</a>, <a href="https://osv.dev/">OSV.dev</a>,
-        and <a href="https://hex.pm/">Hex.pm</a>.
+        and <a href="https://hex.pm/">Hex.pm</a>. In the near future, <code>mix deps.get</code>,
+        <code>rebar3 deps get</code>, and <code>gleam deps download</code> will warn users
+        when they install a package with a known vulnerability.
+      </p>
+      {% include step-screenshot.html src="assets/img/maintainer-process/advisory-cna.erlef.org.png" alt="CVE published on cna.erlef.org" %}
+      {% include step-screenshot.html src="assets/img/maintainer-process/advisory-cve.org.png" alt="CVE published on cve.org" %}
+      {% include step-screenshot.html src="assets/img/maintainer-process/advisory-osv.dev.png" alt="CVE published on osv.dev" %}
+      {% include step-screenshot.html src="assets/img/maintainer-process/advisory-hex.pm.png" alt="CVE published on hex.pm" %}
+    </div>
+  </div>
+  <div class="step-card">
+    <div class="step-number">11</div>
+    <div class="step-content">
+      <strong>Public Announcement</strong>
+      <p>
+        We encourage you to inform your users about the vulnerability and the fix through
+        your community channels such as Slack, Discord, forums, or mailing lists. If the
+        CVE has high severity or the package has wide adoption, the CNA may also publish
+        its own announcements.
       </p>
     </div>
   </div>
@@ -226,7 +259,15 @@ immediately, even if no patch is available:
 - Announcing a "security release" before the advisory is ready
 - Posting about the vulnerability on social media, a blog, or a mailing list
 
-## 7. Further Resources
+## 7. Feedback
+
+Once you are through the process, we would love to hear your feedback on this document.
+If anything took extra time to figure out or required clarification, we want to know so
+we can make it clearer for future maintainers. You can reach us via the
+[Contact](/contact) page, or send a Pull Request directly to
+[this file on GitHub](https://github.com/erlef-cna/website/blob/main/maintainer-process.md).
+
+## 8. Further Resources
 
 <div class="resource-grid">
   <a href="/contact" class="resource-card">
