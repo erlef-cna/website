@@ -233,7 +233,7 @@ blockquote {
   flex: 1;
 }
 
-.step-content strong {
+.step-content > strong:first-child {
   display: block;
   margin-bottom: 0.5rem;
   color: #212529;
@@ -243,6 +243,17 @@ blockquote {
   margin: 0;
   color: #495057;
   font-size: 0.95rem;
+}
+
+.step-content ul {
+  margin: 0.5rem 0 0 0;
+  padding-left: 1.25rem;
+  color: #495057;
+  font-size: 0.95rem;
+}
+
+.step-content ul li {
+  margin-bottom: 0.25rem;
 }
 
 .step-content em {
