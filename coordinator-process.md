@@ -89,7 +89,7 @@ If communication is repeatedly going in a bad direction and you are not able to 
 things back on track, involve a CNA Point of Contact before anything escalates. Do
 not let a difficult conversation drag on without support.
 
-## 5. Required Knowledge
+## 4. Required Knowledge
 
 You do not need to know everything upfront, but these are the core concepts you will
 work with on every report.
@@ -110,7 +110,7 @@ work with on every report.
   Package URLs (purl). For example, `pkg:hex/phoenix` identifies the `phoenix` package
   on Hex.pm.
 
-## 6. Before Your First Report
+## 5. Before Your First Report
 
 Take some time to get familiar with how our CVE records look in practice. Browse the
 [published CVEs](/cves) on this site to see the level of detail we include in titles,
@@ -123,7 +123,7 @@ contains tooling to validate and format them.
 [Vulnogram](https://vulnogram.github.io/) is a useful tool for visually editing and
 validating CVE JSON records.
 
-## 7. The Coordination Process
+## 6. The Coordination Process
 
 <div class="steps-container">
   <div class="step-card">
@@ -269,7 +269,7 @@ validating CVE JSON records.
   </div>
 </div>
 
-## 8. CNA Internal Process & Tooling
+## 7. CNA Internal Process & Tooling
 
 The internal CNA workflow is documented in the
 [cna-staging repository](https://github.com/erlef-cna/cna-staging). This includes
@@ -295,7 +295,7 @@ common coordinator tasks:
   </span>
 </div>
 
-## 9. Further Resources
+## 8. Further Resources
 
 <div class="resource-grid">
   <a href="/contact" class="resource-card">
