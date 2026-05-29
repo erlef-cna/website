@@ -86,4 +86,9 @@ This CNA is hosted by the
     <strong>Maintainer Process</strong>
     <span>How coordinated disclosure works</span>
   </a>
+  <a href="./coordinator-process" class="resource-card">
+    <i class="fas fa-users"></i>
+    <strong>Coordinator Process</strong>
+    <span>Volunteer to handle reports</span>
+  </a>
 </div>
