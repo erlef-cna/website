@@ -1,3 +1,5 @@
+require "time"
+
 module Jekyll
   class CveChartGenerator < Generator
     safe false
@@ -43,7 +45,7 @@ module Jekyll
     end
 
     def current_quarter_info
-      now          = Time.now.utc
+      now          = ENV["CVE_CHART_TIME"] ? Time.parse(ENV["CVE_CHART_TIME"]).utc : Time.now.utc
       year         = now.year
       q            = ((now.month - 1) / 3) + 1
       start_month  = (q - 1) * 3 + 1
@@ -53,7 +55,18 @@ module Jekyll
       total_days   = (q_end - q_start).to_f / 86400
       elapsed_days = [(now - q_start).to_f / 86400, 1].max
       progress     = (elapsed_days / total_days).clamp(0.01, 1.0)
-      { key: "#{year}-Q#{q}", progress: progress }
+      { key: "#{year}-Q#{q}", progress: progress, now: now, q_end: q_end }
+    end
+
+    # Count CVEs published in the 60 days before +before+ time.
+    def count_last_60_days(cves, before)
+      cutoff = before - (60 * 86400)
+      cves.count do |_id, rec|
+        date_str = rec.dig("cveMetadata", "datePublished")
+        next false unless date_str&.match?(/\A\d{4}-\d{2}-\d{2}/)
+        t = Time.parse(date_str).utc
+        t >= cutoff && t < before
+      end
     end
 
     def build_points(cves)
@@ -62,34 +75,18 @@ module Jekyll
       cur_key  = cur_info[:key]
       progress = cur_info[:progress]
 
+      counts[cur_key] = counts[cur_key]  # ensure key exists even if zero
       sorted_keys    = counts.keys.sort
       completed_keys = sorted_keys.reject { |k| k == cur_key }
 
       raw_count       = counts[cur_key] || 0
-      projected_count = (raw_count / progress).round
+      last_60         = count_last_60_days(cves, cur_info[:now])
+      daily_rate      = last_60 / 60.0
+      days_remaining  = [(cur_info[:q_end] - cur_info[:now]).to_f / 86400, 0].max
+      projected_count = (raw_count + daily_rate * days_remaining).round
 
-      # Next quarter: linear regression over the last 3 completed quarters + projected
-      # current, extrapolated one step forward. Limiting to recent quarters avoids early
-      # low values diluting the current upward trend.
-      recent_keys = completed_keys.last(3)
-      regression_points = recent_keys.each_with_index.map { |k, i| [i, counts[k].to_f] }
-      regression_points << [regression_points.size, projected_count.to_f]
-
-      next_count = if regression_points.size >= 2
-        n    = regression_points.size
-        xs   = regression_points.map(&:first)
-        ys   = regression_points.map(&:last)
-        x_mean = xs.sum.to_f / n
-        y_mean = ys.sum.to_f / n
-        num  = xs.zip(ys).sum { |x, y| (x - x_mean) * (y - y_mean) }
-        den  = xs.sum { |x| (x - x_mean)**2 }
-        slope     = den.zero? ? 0 : num / den
-        intercept = y_mean - slope * x_mean
-        predicted = slope * n + intercept  # index n = one step past last point
-        [predicted.round, 0].max
-      else
-        projected_count
-      end
+      # Next quarter: extrapolate from the last-60-days daily rate
+      next_count = (daily_rate * 91).round
 
       cur_year = cur_key.split("-Q").first.to_i
       cur_q    = cur_key.split("-Q").last.to_i
