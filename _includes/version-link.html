@@ -6,7 +6,9 @@
     - include.version_type: The type of version (git, otp, semver, etc.)
     - include.entry: The affected entry object (for repo, packageName, packageURL)
 {%- endcomment -%}
-{%- if include.version == "0" -%}
+{%- if include.version == "*" -%}
+  <em>no fix available</em>
+{%- elsif include.version == "0" -%}
   <code>initial</code>
 {%- elsif include.version_type == "git" and include.entry.repo contains "github.com" -%}
   {%- assign repo_url = include.entry.repo | remove: ".git" -%}

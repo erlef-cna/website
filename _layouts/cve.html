@@ -302,6 +302,8 @@ layout: default
                               <li>{{ change.status }} at {% include version-link.html version=change.at version_type=version.versionType entry=entry %}</li>
                             {% endfor %}
                           </ul>
+                        {% elsif version.lessThan == "*" %}
+                          {% include version-link.html version=version.lessThan version_type=version.versionType entry=entry %}
                         {% elsif version.lessThan %}
                           &lt; {% include version-link.html version=version.lessThan version_type=version.versionType entry=entry %}
                         {% endif %}
