@@ -13,6 +13,9 @@
   {%- if purl contains "pkg:hex/" -%}
     {%- assign hex_name = purl | remove: "pkg:hex/" -%}
     {%- assign pkg_url = "https://hex.pm/packages/" | append: hex_name -%}
+  {%- elsif purl contains "pkg:npm/" -%}
+    {%- assign npm_name = purl | remove: "pkg:npm/" | replace: "%40", "@" | replace: "%2F", "/" -%}
+    {%- assign pkg_url = "https://www.npmjs.com/package/" | append: npm_name -%}
   {%- elsif purl contains "pkg:github/" -%}
     {%- assign github_path = purl | remove: "pkg:github/" -%}
     {%- assign pkg_url = "https://github.com/" | append: github_path -%}
