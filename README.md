@@ -1,5 +1,11 @@
 # Erlang Ecosystem Foundation CNA Website
 
+> [!IMPORTANT]
+> **This repository has been superseded by
+> [erlef-cna/website](https://github.com/erlef-cna/website) and is archived.**
+>
+> Please open issues and pull requests there instead.
+
 [![EEF Security WG project](https://img.shields.io/badge/EEF-Security-black)](https://github.com/erlef/security-wg)
 
 <br clear="left"/>
